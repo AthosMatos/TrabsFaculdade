@@ -23,8 +23,12 @@ Mochila::Mochila(int capacidadeMax, int valorMax, int numero_de_items)
 		items.push_back(tempItem);
 	}
 
-	GerarIndividuo_MenoresPesos(items, capacidadeMax, valorMax);
+	logItems(items);
 
+	GerarIndividuo_MenoresPesos(items, capacidadeMax, valorMax);
+	GerarIndividuo_MenoresValores(items, capacidadeMax, valorMax);
+
+	logIndividuos();
 	return;
 
 }

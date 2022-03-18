@@ -76,7 +76,7 @@ void GerarIndividuo_MenoresPesos(vector <item> items,int maxPeso,int valorMax)
 {
 	sort(items.begin(), items.end(), MenorPaMaior_Peso);
 
-	logItems(items);
+	//logItems(items);
 
 	individuo Tempindividuo;
 	Tempindividuo.id = individuos.size() + 1;
@@ -101,7 +101,7 @@ void GerarIndividuo_MenoresPesos(vector <item> items,int maxPeso,int valorMax)
 
 	individuos.push_back(Tempindividuo);
 
-	logIndividuos();
+	//logIndividuos();
 	
 }
 
@@ -109,7 +109,7 @@ void GerarIndividuo_MenoresValores(vector <item> items, int maxPeso, int valorMa
 {
 	sort(items.begin(), items.end(), MenorPaMaior_Valor);
 
-	logItems(items);
+	//logItems(items);
 
 	individuo Tempindividuo;
 	Tempindividuo.id = individuos.size() + 1;
@@ -134,7 +134,7 @@ void GerarIndividuo_MenoresValores(vector <item> items, int maxPeso, int valorMa
 
 	individuos.push_back(Tempindividuo);
 
-	logIndividuos();
+	//logIndividuos();
 }
 
 void GerarIndividuo_MelhorCustoBeneficio(vector <item> items)
