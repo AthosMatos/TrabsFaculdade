@@ -4,19 +4,24 @@
 
 vector <individuo> individuos;
 
-bool MenorPaMaior(item i, item j)
+bool MenorPaMaior_Peso(item i, item j)
 {
 	return i.peso < j.peso;
 }
 
-bool MenorPaMaior2(pair<int, bool> i, pair<int, bool> j)
+bool MenorPaMaior_Valor(item i, item j)
 {
-	return i.first < j.first;
+	return i.valor < j.valor;
 }
 
-bool MenorPaMaior3(item i, item j)
+bool MenorPaMaior_id(item i, item j)
 {
 	return i.id < j.id;
+}
+
+bool MenorPaMaior_id_pair(pair<int, bool> i, pair<int, bool> j)
+{
+	return i.first < j.first;
 }
 
 void logIndividuos()
@@ -27,7 +32,7 @@ void logIndividuos()
 
 		auto& TempItems = i.items_Id_isActive;
 
-		sort(TempItems.begin(), TempItems.end(), MenorPaMaior2);
+		sort(TempItems.begin(), TempItems.end(), MenorPaMaior_id_pair);
 
 		for (auto& ti : TempItems)
 		{
@@ -46,7 +51,7 @@ void logIndividuos()
 
 void logItems(vector <item> items)
 {
-	sort(items.begin(), items.end(), MenorPaMaior3);
+	sort(items.begin(), items.end(), MenorPaMaior_id);
 
 	cout << "item  : | ";
 	for (auto& i : items)
@@ -69,7 +74,7 @@ void logItems(vector <item> items)
 
 void GerarIndividuo_MenoresPesos(vector <item> items,int maxPeso,int valorMax)
 {
-	sort(items.begin(), items.end(), MenorPaMaior);
+	sort(items.begin(), items.end(), MenorPaMaior_Peso);
 
 	logItems(items);
 
@@ -99,14 +104,44 @@ void GerarIndividuo_MenoresPesos(vector <item> items,int maxPeso,int valorMax)
 	logIndividuos();
 	
 }
-void GerarIndividuo_MenoresValores(vector <item> items)
-{
 
+void GerarIndividuo_MenoresValores(vector <item> items, int maxPeso, int valorMax)
+{
+	sort(items.begin(), items.end(), MenorPaMaior_Valor);
+
+	logItems(items);
+
+	individuo Tempindividuo;
+	Tempindividuo.id = individuos.size() + 1;
+	int TempPeso = 0;
+	int TempValor = 0;
+
+	for (int i = 0; i < items.size(); i++)
+	{
+		if ((TempPeso + items[i].peso < maxPeso) && (TempValor + items[i].valor < valorMax))
+		{
+			Tempindividuo.items_Id_isActive.push_back(pair<int, bool>(items[i].id, true));
+			TempPeso += items[i].peso;
+			TempValor += items[i].valor;
+		}
+		else
+		{
+			Tempindividuo.items_Id_isActive.push_back(pair<int, bool>(items[i].id, false));
+		}
+	}
+	Tempindividuo.pesoTotal = TempPeso;
+	Tempindividuo.ValorTotal = TempValor;
+
+	individuos.push_back(Tempindividuo);
+
+	logIndividuos();
 }
+
 void GerarIndividuo_MelhorCustoBeneficio(vector <item> items)
 {
 
 }
+
 void GerarIndividuo_Aleatorio(vector <item> items)
 {
 
