@@ -140,12 +140,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="mochila.cpp" />
-    <ClCompile Include="Source.cpp" />
+    <ClCompile Include="SourceFile.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GeradorPopulacao.h" />
+    <ClInclude Include="GeradorPopulacaoFuncs.h" />
+    <ClInclude Include="HelperFuncs.h" />
+    <ClInclude Include="itemFuncs.h" />
     <ClInclude Include="mochila.h" />
     <ClInclude Include="structs.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="test1" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

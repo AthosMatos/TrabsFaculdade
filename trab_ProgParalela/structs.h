@@ -12,9 +12,10 @@ struct item
 };
 struct individuo
 {
+	int geracao = 1;
 	int pesoTotal = 0;
 	int ValorTotal = 0;
 	int id;
-	vector <pair<int, bool>> items_Id_isActive;
+	vector <pair<int, bool>> Cromossomo;
 
 };
