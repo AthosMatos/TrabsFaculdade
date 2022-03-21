@@ -25,17 +25,23 @@ Mochila::Mochila(int numero_de_items, int PesoMax, int valorMax)
 
 Mochila::Mochila()
 {
+	mutationPorcentage = 5; //5% de chaance de mutacao
+
 	individuo OptimalIndividuo;
 	auto& OptimalIndividuoRef = OptimalIndividuo;
-
 	auto& valorMaxRef = this->valorMax;
 	auto& PesoMaxRef = this->PesoMax;
 	auto& individuosRef = this->individuos;
 	auto& valorTotalSomaRef = this->valorTotalSoma;
 	auto& TotalItemsRef = this->TotalItems;
 
-	items = FiletoItems("test1", valorMaxRef, PesoMaxRef, TotalItemsRef, OptimalIndividuoRef);
-	logData(PesoMax, "PesoMax",2);
+	items = FiletoItems("test3", valorMaxRef, PesoMaxRef, TotalItemsRef, OptimalIndividuoRef);
+
+	valorIdeal = OptimalIndividuo.ValorTotal;
+
+	logIndividuoReducedData(OptimalIndividuo);
+
+	logData(PesoMax, "\nPesoMax",2);
 	//logItems(items);
 
 	GerarIndividuo_MenoresPesos(individuosRef,items, PesoMax, valorTotalSomaRef);
@@ -46,54 +52,14 @@ Mochila::Mochila()
 	GerarIndividuo_Ultra_Aleatorio(individuosRef, items, PesoMax, valorTotalSomaRef);
 
 	//sort(individuos.begin(), individuos.end(), MaiorPaMenor_ValorIndividuo);
-	logIndividuosReducedData(individuos);
+	//logIndividuosReducedData(individuos);
+
 	geracoes.push_back(individuos);
 
-	logData(valorTotalSoma, "valorTotalSoma", 2);
+	//logData(valorTotalSoma, "valorTotalSoma", 2);
 
-	int pardone = 0;
-	pair<individuo, individuo> par;
-
-	auto tempindividuos = individuos;
-	auto& tempindividuosRef = tempindividuos;
-
-	auto valorTotalSomaTemp = valorTotalSoma;
-
-	for (auto& i : tempindividuos)
-	{
-		Probabilidades.clear();
-		valorTotalSomaTemp = CalcValorTotal(tempindividuos);
-
-		for (auto& i : tempindividuos)
-		{
-			cout << fixed;
-			cout.precision(2);
-			cout << "- prob individuo " << i.id << ": " << ((i.ValorTotal * 100.0) / valorTotalSomaTemp) << '%' << endl;
-			Probabilidades.push_back(pair<int, float>(i.id, ((i.ValorTotal * 100.0) / valorTotalSomaTemp)));
-		}
-		if (pardone == 0)par.first = getIndividuoProbabilities(tempindividuosRef);
-		else if (pardone == 1) 
-		{ 
-			par.second = getIndividuoProbabilities(tempindividuosRef); 
-			pardone = -1; 
-
-			paresIndividuos.push_back(par);
-		}
-		
-		pardone++;
-		cout << endl;
-	}
-
-	for (auto& p : paresIndividuos)
-	{
-		auto filhos = Reproduce(p);
-
-		individuos.push_back(filhos.first);
-		individuos.push_back(filhos.second);
-	}
+	Evolve(10);
 	
-	logIndividuosReducedData(individuos);
-
 	//GerarIndividuo_MenoresValores(items, valorMax, PesoMax);
 
 	
@@ -125,7 +91,7 @@ individuo Mochila::getIndividuoProbabilities(vector<individuo>& tempIndividuos)
 		}
 	}
 	//cout << "Valor gerado: " << value << endl;
-	cout << "|||Individuo " << chosen.first << " com porcentagem " << chosen.second << " selecionado|||" << endl;
+	//cout << "|||Individuo " << chosen.first << " com porcentagem " << chosen.second << " selecionado|||" << endl;
 
 	int index = 0;
 	for (auto& i : tempIndividuos)
@@ -192,4 +158,151 @@ vector<pair<int, bool>> Mochila::gerarCromossomo( pair<individuo, individuo> par
 	sort(cromossomo.begin(), cromossomo.end(), MenorPaMaior_id_pair);
 
 	return cromossomo;
+}
+
+void Mochila::CheckMutation()
+{
+	random_device r;
+	default_random_engine e1(r());
+	uniform_int_distribution<> uniform_dist(0, 100);
+
+	for (auto& i : individuos)
+	{
+		int value = uniform_dist(e1);
+		if (value <= mutationPorcentage)
+		{
+			mutate(i);
+		}
+	}
+
+}
+
+void Mochila::mutate(individuo& i)
+{
+	random_device r;
+	default_random_engine e1(r());
+	uniform_int_distribution<> uniform_dist(0, i.Cromossomo.size() - 1);
+
+	int index = uniform_dist(e1);
+
+	i.Cromossomo[index].second = !i.Cromossomo[index].second;
+	
+}
+
+void Mochila::Evolve(int iterations)
+{
+	for (int i = 0; i < iterations; i++)
+	{
+		int pardone = 0;
+		pair<individuo, individuo> par;
+
+		auto tempindividuos = individuos;
+		auto& tempindividuosRef = tempindividuos;
+
+		auto valorTotalSomaTemp = valorTotalSoma;
+
+		for (auto& i : tempindividuos)
+		{
+			Probabilidades.clear();
+			valorTotalSomaTemp = CalcValorTotal(tempindividuos);
+
+			for (auto& i : tempindividuos)
+			{
+				cout << fixed;
+				cout.precision(2);
+				//cout << "- prob individuo " << i.id << ": " << ((i.ValorTotal * 100.0) / valorTotalSomaTemp) << '%' << endl;
+
+				Probabilidades.push_back(pair<int, float>(i.id, ((i.ValorTotal * 100.0) / valorTotalSomaTemp)));
+			}
+			if (pardone == 0)par.first = getIndividuoProbabilities(tempindividuosRef);
+			else if (pardone == 1)
+			{
+				par.second = getIndividuoProbabilities(tempindividuosRef);
+				pardone = -1;
+
+				paresIndividuos.push_back(par);
+			}
+
+			pardone++;
+			//cout << endl;
+		}
+
+		vector<individuo> NewGeneration;
+
+		for (auto& p : paresIndividuos)
+		{
+			auto filhos = Reproduce(p);
+
+			individuos.push_back(filhos.first);
+			individuos.push_back(filhos.second);
+
+			NewGeneration.push_back(filhos.first);
+			NewGeneration.push_back(filhos.second);
+
+			if (CriterioParada(filhos.first, filhos.second)) return;
+		}
+
+		CheckMutation();
+
+		PexteBulbonica();
+
+		geracoes.push_back(NewGeneration);
+	}
+
+	//logIndividuosReducedData(individuos);
+}
+
+void Mochila::PexteBulbonica()
+{
+	sort(individuos.begin(), individuos.end(), MaiorPaMenor_ValorIndividuo);
+
+	for (int index = 0;index< individuos.size();index++)
+	{
+		if (index >= (individuos.size() / 4))
+		{
+			if ((individuos[index].pesoTotal > PesoMax))
+			{
+				individuos.erase(individuos.begin() + index);
+				index = -1;
+			}
+		}
+		
+	}
+
+	sort(individuos.begin(), individuos.end(), MenorPaMaior_id_individuo);
+
+	int index = 1;
+	for (auto& i : individuos)
+	{
+		i.id = index;
+		index++;
+	}
+
+
+	return;
+}
+
+bool Mochila::CriterioParada(individuo i1, individuo i2)
+{
+	const float margemErr = 0.2; //porcento
+
+	if (i1.pesoTotal <= PesoMax && i2.pesoTotal <= PesoMax)
+	{
+		if (i1.ValorTotal >= (valorIdeal - ((valorIdeal * margemErr) / 100))
+			&&
+			i1.ValorTotal <= (valorIdeal + ((valorIdeal * margemErr) / 100)))
+		{
+			cout << "Individuo " << i1.id << " de peso " << i1.pesoTotal << " Aproximdo valor : " << i1.ValorTotal;
+			return true;
+		}
+		else if (i2.ValorTotal >= (valorIdeal - ((valorIdeal * margemErr) / 100))
+			&&
+			i2.ValorTotal <= (valorIdeal + ((valorIdeal * margemErr) / 100)))
+		{
+			cout << "Individuo " << i2.id << " de peso " << i2.pesoTotal << " Aproximdo valor : " << i2.ValorTotal;
+			return true;
+		}
+	}
+
+	return false;
 }

@@ -17,15 +17,23 @@ private:
 	individuo getIndividuoProbabilities(vector<individuo>& tempIndividuos);
 	pair<individuo, individuo> Reproduce(pair<individuo, individuo> par);
 	vector <pair<int, bool>> gerarCromossomo(pair<individuo, individuo> par, int pontoCorte,bool turn);
+	void CheckMutation();
+	void mutate(individuo& i);
+	void Evolve(int iterations);
+	void PexteBulbonica();
+	bool CriterioParada(individuo i1, individuo i2);
 
 private:
 	int TotalItems; 
 
 	int valorMax;
+	int valorIdeal;
 	int valorTotalSoma = 0;
 
 	int PesoMax;
 	int pesoTotalSoma = 0;
+
+	int mutationPorcentage;
 
 private:
 	vector<vector<individuo>>geracoes;

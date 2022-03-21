@@ -45,6 +45,8 @@ vector <item> FiletoItems(string file, int& valorMax, int& PesoMax, int& TotalIt
     int TempValor = 0;
 
     int i = 0;
+    OptimalIndividuo.id = 0;
+    OptimalIndividuo.geracao = 0;
 
     while (!indata.eof())
     {

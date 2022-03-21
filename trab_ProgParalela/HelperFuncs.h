@@ -32,6 +32,12 @@ bool MaiorPaMenor_ValorIndividuo(individuo i, individuo j)
     return i.ValorTotal > j.ValorTotal;
 }
 
+bool MenorPaMaior_id_individuo(individuo i, individuo j)
+{
+    return i.id < j.id;
+}
+
+
 bool MaiorPaMenor_Probs(pair<int, float> i, pair<int, float> j)
 {
     return i.second > j.second;
@@ -62,8 +68,18 @@ int CalcValorTotal(vector<individuo>individuos)
 
 void logIndividuos(vector <individuo> individuos)
 {
+    int geracao = 1;
+
+    cout << "|| Geracao " << 1 << " ||" << endl << endl;
+
     for (auto& i : individuos)
     {
+        if (i.geracao != geracao)
+        {
+            cout << "|| Geracao " << i.geracao << " ||" << endl << endl;
+            geracao = i.geracao;
+        }
+
         cout << "Individuo " << i.id << ": | ";
 
         auto& TempItems = i.Cromossomo;
@@ -106,6 +122,19 @@ void logIndividuosReducedData(vector <individuo> individuos)
 
         cout << endl;
     }
+}
+
+void logIndividuoReducedData(individuo i)
+{
+    cout << "|| Geracao " << i.geracao << " ||" << endl << endl;
+
+    cout << "Individuo " << i.id << ": | ";
+
+    cout << "   PesoTotal: " << i.pesoTotal;
+    cout << "  |  ValorTotal: " << i.ValorTotal;
+
+    cout << endl;
+    
 }
 
 void logItems(vector <item> items)

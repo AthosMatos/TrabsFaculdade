@@ -36,5 +36,17 @@
     <None Include="test1">
       <Filter>tests</Filter>
     </None>
+    <None Include="test2">
+      <Filter>tests</Filter>
+    </None>
+    <None Include="test3">
+      <Filter>tests</Filter>
+    </None>
+    <None Include="test4">
+      <Filter>tests</Filter>
+    </None>
+    <None Include="test5">
+      <Filter>tests</Filter>
+    </None>
   </ItemGroup>
 </Project>

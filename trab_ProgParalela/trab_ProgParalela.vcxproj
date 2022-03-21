@@ -151,6 +151,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="test1" />
+    <None Include="test2" />
+    <None Include="test3" />
+    <None Include="test4" />
+    <None Include="test5" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
