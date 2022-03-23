@@ -34,6 +34,7 @@ private:
 	int pesoTotalSoma = 0;
 
 	int mutationPorcentage;
+	int maxPopulataion;
 
 private:
 	vector<vector<individuo>>geracoes;

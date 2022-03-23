@@ -26,6 +26,9 @@ Mochila::Mochila(int numero_de_items, int PesoMax, int valorMax)
 Mochila::Mochila()
 {
 	mutationPorcentage = 5; //5% de chaance de mutacao
+	maxPopulataion = 100;
+	//tamanho populacao
+	//altera mutacao pegando todos os individuos colocar pra pegar apenas novas geracoes
 
 	individuo OptimalIndividuo;
 	auto& OptimalIndividuoRef = OptimalIndividuo;
@@ -239,7 +242,12 @@ void Mochila::Evolve(int iterations)
 			NewGeneration.push_back(filhos.first);
 			NewGeneration.push_back(filhos.second);
 
-			if (CriterioParada(filhos.first, filhos.second)) return;
+			if (CriterioParada(filhos.first, filhos.second))
+			{
+				logIndividuosReducedData(individuos);
+				return;
+			}
+				
 		}
 
 		CheckMutation();
@@ -249,7 +257,7 @@ void Mochila::Evolve(int iterations)
 		geracoes.push_back(NewGeneration);
 	}
 
-	//logIndividuosReducedData(individuos);
+	
 }
 
 void Mochila::PexteBulbonica()
@@ -263,8 +271,16 @@ void Mochila::PexteBulbonica()
 			if ((individuos[index].pesoTotal > PesoMax))
 			{
 				individuos.erase(individuos.begin() + index);
-				index = -1;
+				index -= 1;
+				continue;
 			}
+		}
+
+		if (index > maxPopulataion)
+		{
+			individuos.erase(individuos.begin() + index);
+			index -= 1;
+			continue;
 		}
 		
 	}
@@ -292,14 +308,14 @@ bool Mochila::CriterioParada(individuo i1, individuo i2)
 			&&
 			i1.ValorTotal <= (valorIdeal + ((valorIdeal * margemErr) / 100)))
 		{
-			cout << "Individuo " << i1.id << " de peso " << i1.pesoTotal << " Aproximdo valor : " << i1.ValorTotal;
+			cout << "Individuo " << i1.id << " de peso " << i1.pesoTotal << " Aproximdo valor : " << i1.ValorTotal << endl;
 			return true;
 		}
 		else if (i2.ValorTotal >= (valorIdeal - ((valorIdeal * margemErr) / 100))
 			&&
 			i2.ValorTotal <= (valorIdeal + ((valorIdeal * margemErr) / 100)))
 		{
-			cout << "Individuo " << i2.id << " de peso " << i2.pesoTotal << " Aproximdo valor : " << i2.ValorTotal;
+			cout << "Individuo " << i2.id << " de peso " << i2.pesoTotal << " Aproximdo valor : " << i2.ValorTotal << endl;
 			return true;
 		}
 	}
