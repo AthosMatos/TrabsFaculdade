@@ -169,10 +169,18 @@ void logData(int valorMax, int PesoMax)
     cout << endl << "PesoMax : | " << PesoMax << " | " << endl << endl;
 }
 
-void logData(int ValueMax, string valueName,int linesBetween)
+void logData(int Value, string valueName,int linesBetween)
 {
-    cout << valueName << "  : | " << ValueMax << " | ";
+    cout << valueName << "  : | " << Value << " | ";
         
     for (int i = 0; i < linesBetween; i++) { cout << endl; }
         
+}
+
+void logData(string Value, string valueName, int linesBetween)
+{
+    cout << valueName << "  : | " << Value << " | ";
+
+    for (int i = 0; i < linesBetween; i++) { cout << endl; }
+
 }

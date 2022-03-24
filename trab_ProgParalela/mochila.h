@@ -14,14 +14,15 @@ public:
 	Mochila();
 
 private:
-	individuo getIndividuoProbabilities(vector<individuo>& tempIndividuos);
+	individuo getIndividuoProbabilities(vector<individuo>& tempIndividuos, vector <pair<int, float>> tempProbabilidades);
 	pair<individuo, individuo> Reproduce(pair<individuo, individuo> par);
 	vector <pair<int, bool>> gerarCromossomo(pair<individuo, individuo> par, int pontoCorte,bool turn);
-	void CheckMutation();
+	void CheckMutation(vector<individuo>& generations);
 	void mutate(individuo& i);
-	void Evolve(int iterations);
+	bool Evolve(int iterations);
+	void OrderUpdatedIndividuos();
 	void PexteBulbonica();
-	bool CriterioParada(individuo i1, individuo i2);
+	bool CriterioParada(individuo indiv);
 
 private:
 	int TotalItems; 
@@ -35,12 +36,16 @@ private:
 
 	int mutationPorcentage;
 	int maxPopulataion;
+	float margemErr; //porcento
+	int iteracoes;
+
+	int geracoes = 0;
 
 private:
-	vector<vector<individuo>>geracoes;
+	
 	vector<individuo>individuos;
-	vector <pair<int, float>> Probabilidades;
-	vector<pair<individuo, individuo>> paresIndividuos;
 	vector<item> items;
+
+	individuo individuoWinner;
 };
 
