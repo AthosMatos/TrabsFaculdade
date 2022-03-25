@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <time.h>
 #include <iostream>
+#include <thread>
+#include <functional>
 #include "structs.h"
 
 using namespace std;
@@ -10,7 +12,6 @@ using namespace std;
 class Mochila
 {
 public:
-	Mochila(int numero_de_items, int PesoMax, int valorMax); //gera items iniciais
 	Mochila();
 
 private:
@@ -25,9 +26,13 @@ private:
 	bool CriterioParada(individuo indiv);
 
 private:
+	void GerarIndivididuo(int type, vector<individuo>& individuosRef, int& valorTotalSomaRef);
+
+private:
 	int TotalItems; 
 
 	int valorMax;
+
 	int valorIdeal;
 	int valorTotalSoma = 0;
 
@@ -43,8 +48,10 @@ private:
 
 private:
 	
-	vector<individuo>individuos;
+	vector<individuo> individuos;
 	vector<item> items;
+
+	vector <thread> threads;
 
 	individuo individuoWinner;
 };

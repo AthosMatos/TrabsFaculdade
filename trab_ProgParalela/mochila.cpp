@@ -1,26 +1,7 @@
 #include "mochila.h"
 #include "GeradorPopulacaoFuncs.h"
 #include "HelperFuncs.h"
-#include <functional>
 #include "itemFuncs.h"
-#include <thread>
-#include <future>
-
-Mochila::Mochila(int numero_de_items, int PesoMax, int valorMax)
-{
-	this->valorMax = valorMax;
-	this->PesoMax = PesoMax;
-
-	auto& individuosRef = this->individuos;
-
-	auto items = CreateItems(numero_de_items, PesoMax, valorMax);
-	logItems(items);
-
-	GerarIndividuo_MenoresPesos(individuosRef, items, valorMax, PesoMax);
-	logIndividuos(individuos);
-
-	//GerarIndividuo_MenoresValores(items, valorMax, PesoMax);
-}
 
 Mochila::Mochila()
 {
@@ -33,7 +14,8 @@ Mochila::Mochila()
 	auto& OptimalIndividuoRef = OptimalIndividuo;
 	auto& valorMaxRef = this->valorMax;
 	auto& PesoMaxRef = this->PesoMax;
-	auto& individuosRef = this->individuos;
+
+	auto& individuosRef = individuos;
 	auto& valorTotalSomaRef = this->valorTotalSoma;
 	auto& TotalItemsRef = this->TotalItems;
 
@@ -42,8 +24,6 @@ Mochila::Mochila()
 	valorIdeal = OptimalIndividuo.ValorTotal;
 
 	//logIndividuoReducedData(OptimalIndividuo);
-
-	//thread LogPesoMax(logData, PesoMax, "Peso Maximo suportado pela mochila", 1);
 
 	logData(PesoMax, "Peso Maximo suportado pela mochila", 1);
 	logData(OptimalIndividuo.ValorTotal, "Valor Otimo", 1);
@@ -55,15 +35,14 @@ Mochila::Mochila()
 	logData(me + '%', "Margem de erro para resultado", 2);
 
 	//logItems(items);
+	
+	for (int i = 0; i < 6; i++) { threads.push_back(thread(&Mochila::GerarIndivididuo, this, i + 1, ref(individuosRef), ref(valorTotalSomaRef))); }
+	for (auto& t : threads) { t.join(); }
 
-	GerarIndividuo_MenoresPesos(individuosRef,items, PesoMax, valorTotalSomaRef);
-	GerarIndividuo_MenoresValores(individuosRef, items, PesoMax, valorTotalSomaRef);
-	GerarIndividuo_MelhorCustoBeneficioPeso(individuosRef, items, PesoMax, valorTotalSomaRef);
-	GerarIndividuo_MelhorCustoBeneficioValor(individuosRef, items, PesoMax, valorTotalSomaRef);
-	GerarIndividuo_Ultra_Aleatorio(individuosRef, items, PesoMax, valorTotalSomaRef);
-	GerarIndividuo_Ultra_Aleatorio(individuosRef, items, PesoMax, valorTotalSomaRef);
 
 	//logIndividuosReducedData(individuos);
+
+
 
 	geracoes++;;
 
@@ -339,3 +318,41 @@ bool Mochila::CriterioParada(individuo indiv)
 
 	return false;
 }
+
+void Mochila::GerarIndivididuo(int type, vector<individuo>& individuosRef, int& valorTotalSomaRef)
+{
+	switch (type)
+	{
+		case 1:
+		{
+			GerarIndividuo_MenoresPesos(individuosRef, items, PesoMax, valorTotalSomaRef);
+			return;
+		}
+		case 2:
+		{
+			GerarIndividuo_MenoresValores(individuosRef, items, PesoMax, valorTotalSomaRef);
+			return;
+		}
+		case 3:
+		{
+			GerarIndividuo_MelhorCustoBeneficioPeso(individuosRef, items, PesoMax, valorTotalSomaRef);
+			return;
+		}
+		case 4:
+		{
+			GerarIndividuo_MelhorCustoBeneficioValor(individuosRef, items, PesoMax, valorTotalSomaRef);
+			return;
+		}
+		case 5:
+		{
+			GerarIndividuo_Ultra_Aleatorio(individuosRef, items, PesoMax, valorTotalSomaRef);
+			return;
+		}
+		case 6:
+		{
+			GerarIndividuo_Ultra_Aleatorio(individuosRef, items, PesoMax, valorTotalSomaRef);
+			return;
+		}	
+	}
+}
+
