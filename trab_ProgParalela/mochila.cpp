@@ -10,48 +10,54 @@ Mochila::Mochila()
 	maxPopulataion = 100; //tamanho populacao 
 	iteracoes = 50;
 
-	individuo OptimalIndividuo;
+}
+
+void Mochila::GerarItems(string filename)
+{
 	auto& OptimalIndividuoRef = OptimalIndividuo;
 	auto& valorMaxRef = this->valorMax;
 	auto& PesoMaxRef = this->PesoMax;
 
-	auto& individuosRef = individuos;
-	auto& valorTotalSomaRef = this->valorTotalSoma;
 	auto& TotalItemsRef = this->TotalItems;
 
-	items = FiletoItems("test3", valorMaxRef, PesoMaxRef, TotalItemsRef, OptimalIndividuoRef);
+	items = FiletoItems(filename, valorMaxRef, PesoMaxRef, TotalItemsRef, OptimalIndividuoRef);
 
 	valorIdeal = OptimalIndividuo.ValorTotal;
 
-	//logIndividuoReducedData(OptimalIndividuo);
+	LogFileData();
 
-	logData(PesoMax, "Peso Maximo suportado pela mochila", 1);
-	logData(OptimalIndividuo.ValorTotal, "Valor Otimo", 1);
-	logData(maxPopulataion, "Limite de individuos", 1);
-	logData(iteracoes, "Limite de iteracoes", 1);
-	auto me = to_string(margemErr);
-	for (int i = me.length(); i > 3; i--){ me.erase(me.begin() + i); }
-	logData(to_string(mutationPorcentage) + '%', "Chance de mutacao", 1);
-	logData(me + '%', "Margem de erro para resultado", 2);
+}
 
-	//logItems(items);
-	
-	for (int i = 0; i < 6; i++) { threads.push_back(thread(&Mochila::GerarIndivididuo, this, i + 1, ref(individuosRef), ref(valorTotalSomaRef))); }
-	for (auto& t : threads) { t.join(); }
+///THREADS ADICIONADOS
+void Mochila::GerarPopInicial()
+{
+	auto& individuosRef = individuos;
+	auto& valorTotalSomaRef = this->valorTotalSoma;
 
-
+	GerarIndividuo_MenoresPesos(individuosRef, items, PesoMax, valorTotalSomaRef).join();
+	//GerarIndividuo_MenoresValores(individuosRef, items, PesoMax, valorTotalSomaRef).join();
+	GerarIndividuo_MelhorCustoBeneficioPeso(individuosRef, items, PesoMax, valorTotalSomaRef).join();
+	GerarIndividuo_MelhorCustoBeneficioValor(individuosRef, items, PesoMax, valorTotalSomaRef).join();
+	GerarIndividuo_Ultra_Aleatorio(individuosRef, items, PesoMax, valorTotalSomaRef).join();
+	GerarIndividuo_Ultra_Aleatorio(individuosRef, items, PesoMax, valorTotalSomaRef).join();
+	GerarIndividuo_Ultra_Aleatorio(individuosRef, items, PesoMax, valorTotalSomaRef).join();
 	//logIndividuosReducedData(individuos);
 
-
-
-	geracoes++;;
-
-	//logData(valorTotalSoma, "valorTotalSoma", 2);
-
-	if (!Evolve(iteracoes)) cout << "\nIndividuo com valor otimo nao encontrado! Tente aumentar a margem de erro ou o numero de iteracoes" << endl;
-
-	return;
+	geracoes++;
 }
+
+void Mochila::Evoluir()
+{
+	if (!Evolve()) cout << "\nIndividuo com valor otimo nao encontrado! Tente aumentar a margem de erro ou o numero de iteracoes" << endl;
+}
+
+void Mochila::setMargemErro(float margem) { margemErr = margem; }
+
+void Mochila::setMutacao(int porcentagem) { mutationPorcentage = porcentagem; }
+
+void Mochila::setNumeroMaxPopulacao(int num) { maxPopulataion = num; }
+
+void Mochila::setMaxIteracoes(int iteracoes) { this->iteracoes = iteracoes; }
 
 individuo Mochila::getIndividuoProbabilities(vector<individuo>& tempIndividuos, vector <pair<int, float>> tempProbabilidades)
 {
@@ -93,7 +99,9 @@ individuo Mochila::getIndividuoProbabilities(vector<individuo>& tempIndividuos, 
 
 }
 
-pair<individuo, individuo> Mochila::Reproduce(pair<individuo, individuo> par)
+
+///THREADS ADICIONADOS
+pair<individuo, individuo> Mochila::Reproduce(pair<individuo, individuo> par, int updatedsize)
 {
 	pair<individuo, individuo> filhos;
 
@@ -103,25 +111,30 @@ pair<individuo, individuo> Mochila::Reproduce(pair<individuo, individuo> par)
 
 	int pontoCorte = uniform_dist(e1);
 
-	individuo filho1;
+	individuo filho1, filho2;
 	auto& filho1Ref = filho1;
-	filho1Ref.Cromossomo = gerarCromossomo(par, pontoCorte, true);
-	GerarEvolucao(filho1Ref, individuos.size(), geracoes + 1, items);
+	auto& filho2Ref = filho2;
+
+	thread CromoFilho1(&Mochila::gerarCromossomo, this, ref(filho1Ref), par, pontoCorte, true);
+	thread CromoFilho2(&Mochila::gerarCromossomo, this, ref(filho2Ref), par, pontoCorte, false);
+
+	CromoFilho1.join();
+	CromoFilho2.join();
+
+	thread EvoFilho1(GerarEvolucao, ref(filho1Ref), updatedsize, geracoes + 1, items);
+	thread EvoFilho2(GerarEvolucao, ref(filho2Ref), updatedsize + 1, geracoes + 1, items);
+
+	EvoFilho1.join();
+	EvoFilho2.join();
 
 	filhos.first = filho1;
-
-	individuo filho2;
-	auto& filho2Ref = filho2;
-	filho2Ref.Cromossomo = gerarCromossomo(par, pontoCorte, false);
-	GerarEvolucao(filho2Ref, individuos.size()+1, geracoes + 1, items);
-
 	filhos.second = filho2;
 
 	return filhos;
 
 }
 
-vector<pair<int, bool>> Mochila::gerarCromossomo( pair<individuo, individuo> par, int pontoCorte,bool turn)
+void Mochila::gerarCromossomo(individuo& filhoRef, pair<individuo, individuo> par, int pontoCorte,bool turn)
 {
 	vector <pair<int, bool>> cromossomo;
 	individuo C1, C2;
@@ -129,18 +142,18 @@ vector<pair<int, bool>> Mochila::gerarCromossomo( pair<individuo, individuo> par
 	if (turn) { C1 = par.first; C2 = par.second; }
 	else { C1 = par.second; C2 = par.first; }
 
-	for (int i = pontoCorte - 1; i >= 0; i--) 
-	{ 
+	for (int i = pontoCorte - 1; i >= 0; i--)
+	{
 		cromossomo.push_back(pair<int, bool>(C1.Cromossomo[i].first, C1.Cromossomo[i].second));
 	}
-	for (int i = pontoCorte; i < TotalItems; i++) 
-	{ 
+
+	for (int i = pontoCorte; i < TotalItems; i++)
+	{
 		cromossomo.push_back(pair<int, bool>(C2.Cromossomo[i].first, C2.Cromossomo[i].second));
 	}
 
 	sort(cromossomo.begin(), cromossomo.end(), MenorPaMaior_id_pair);
-
-	return cromossomo;
+	filhoRef.Cromossomo = cromossomo;
 }
 
 void Mochila::CheckMutation(vector<individuo>& generations)
@@ -155,6 +168,7 @@ void Mochila::CheckMutation(vector<individuo>& generations)
 		if (value <= mutationPorcentage)
 		{
 			mutate(G);
+			return;
 		}
 	}
 
@@ -172,50 +186,20 @@ void Mochila::mutate(individuo& i)
 	
 }
 
-bool Mochila::Evolve(int iterations)
+bool Mochila::Evolve()
 {
-	pair<individuo, individuo> par;
-	vector<pair<individuo, individuo>> paresIndividuos;
 	vector <pair<int, float>> Probabilidades;
 
-	for (int i = 0, pardone = 0, valorTotalSomaTemp; i < iterations; i++)
+	for (int i = 0; i < iteracoes; i++)
 	{
-		paresIndividuos.clear();
-		
-		auto tempindividuos = individuos;
-		auto& tempindividuosRef = tempindividuos;
-
-		for (auto& i : tempindividuos)
-		{
-			Probabilidades.clear();
-			valorTotalSomaTemp = CalcValorTotal(tempindividuos);
-
-			for (auto& i : tempindividuos)
-			{
-				cout << fixed;
-				cout.precision(2);
-				//cout << "- prob individuo " << i.id << ": " << ((i.ValorTotal * 100.0) / valorTotalSomaTemp) << '%' << endl;
-
-				Probabilidades.push_back(pair<int, float>(i.id, ((i.ValorTotal * 100.0) / valorTotalSomaTemp)));
-			}
-			if (pardone == 0)par.first = getIndividuoProbabilities(tempindividuosRef, Probabilidades);
-			else if (pardone == 1)
-			{
-				par.second = getIndividuoProbabilities(tempindividuosRef, Probabilidades);
-				pardone = -1;
-
-				paresIndividuos.push_back(par);
-			}
-			pardone++;
-			//cout << endl;
-		}
+		auto paresIndividuos = FazerPares();
 
 		vector<individuo> NewGeneration;
 		auto& NewGenerationRef = NewGeneration;
 
 		for (auto& p : paresIndividuos)
 		{
-			auto filhos = Reproduce(p);
+			auto filhos = Reproduce(p, individuos.size() + NewGeneration.size());
 
 			NewGeneration.push_back(filhos.first);
 			NewGeneration.push_back(filhos.second);		
@@ -256,8 +240,10 @@ bool Mochila::Evolve(int iterations)
 		logData(geracoes - 1, "Iteracao: ", 0);
 		logData(individuos.size(), "Numero de individuos na Populacao: ", 0);
 		logData(geracoes, " Numero de geracoes: ", 1);
-	}
 
+		
+	}
+	//logIndividuosReducedData(individuos);
 	return false;
 	
 }
@@ -278,15 +264,12 @@ void Mochila::PexteBulbonica()
 {
 	sort(individuos.begin(), individuos.end(), MaiorPaMenor_ValorIndividuo);
 
-	for (int index = 0;index < individuos.size();index++)
+	for (int index = individuos.size() * 0.75;index < individuos.size();index++)
 	{
-		if (index >= (individuos.size() / 4))
+		if ((individuos[index].pesoTotal > PesoMax))
 		{
-			if ((individuos[index].pesoTotal > PesoMax))
-			{
-				individuos.erase(individuos.begin() + index);
-				index--;
-			}
+			individuos.erase(individuos.begin() + index);
+			index--;
 		}
 	}
 
@@ -319,40 +302,68 @@ bool Mochila::CriterioParada(individuo indiv)
 	return false;
 }
 
-void Mochila::GerarIndivididuo(int type, vector<individuo>& individuosRef, int& valorTotalSomaRef)
+int Mochila::CalcValorTotal(vector<individuo> individuos)
 {
-	switch (type)
+	int soma = 0;
+
+	for (auto& i : individuos)
 	{
-		case 1:
-		{
-			GerarIndividuo_MenoresPesos(individuosRef, items, PesoMax, valorTotalSomaRef);
-			return;
-		}
-		case 2:
-		{
-			GerarIndividuo_MenoresValores(individuosRef, items, PesoMax, valorTotalSomaRef);
-			return;
-		}
-		case 3:
-		{
-			GerarIndividuo_MelhorCustoBeneficioPeso(individuosRef, items, PesoMax, valorTotalSomaRef);
-			return;
-		}
-		case 4:
-		{
-			GerarIndividuo_MelhorCustoBeneficioValor(individuosRef, items, PesoMax, valorTotalSomaRef);
-			return;
-		}
-		case 5:
-		{
-			GerarIndividuo_Ultra_Aleatorio(individuosRef, items, PesoMax, valorTotalSomaRef);
-			return;
-		}
-		case 6:
-		{
-			GerarIndividuo_Ultra_Aleatorio(individuosRef, items, PesoMax, valorTotalSomaRef);
-			return;
-		}	
+		soma += i.ValorTotal;
 	}
+	return soma;
 }
 
+vector<pair<individuo, individuo>> Mochila::FazerPares()
+{
+	vector<pair<individuo, individuo>> paresIndividuos;
+
+	vector <pair<int, float>> Probabilidades;
+	pair<individuo, individuo> par;
+	bool pardone = false;
+
+	auto tempindividuos = individuos;
+	auto& tempindividuosRef = tempindividuos;
+
+	for (auto& i : tempindividuos)
+	{
+		Probabilidades.clear();
+
+		auto valorTotalSomaTemp = CalcValorTotal(tempindividuos);
+
+		//for (int i = 0; i < 6; i++) { threads.push_back(thread(&Mochila::GerarIndivididuo, this, i + 1, ref(individuosRef), ref(valorTotalSomaRef))); }
+		//for (auto& t : threads) { t.join(); }
+
+		for (auto& i : tempindividuos)
+		{
+			cout << fixed;
+			cout.precision(2);
+			//cout << "- prob individuo " << i.id << ": " << ((i.ValorTotal * 100.0) / valorTotalSomaTemp) << '%' << endl;
+
+			Probabilidades.push_back(pair<int, float>(i.id, ((i.ValorTotal * 100.0) / valorTotalSomaTemp)));
+		}
+		if (!pardone)par.first = getIndividuoProbabilities(tempindividuosRef, Probabilidades); ///nao coloquei thread aqui pq os parametros
+		else																					//estao mudando a cada iteracao do for
+		{
+			par.second = getIndividuoProbabilities(tempindividuosRef, Probabilidades);
+
+			paresIndividuos.push_back(par);
+		}
+		pardone = !pardone;
+		//cout << endl;
+	}
+
+	return paresIndividuos;
+}
+
+void Mochila::LogFileData()
+{
+
+	logData(PesoMax, "Peso Maximo suportado pela mochila", 1);
+	logData(OptimalIndividuo.ValorTotal, "Valor Otimo", 1);
+	logData(maxPopulataion, "Limite de individuos", 1);
+	logData(iteracoes, "Limite de iteracoes", 1);
+	auto me = to_string(margemErr);
+	for (int i = me.length(); i > 3; i--) { me.erase(me.begin() + i); }
+	logData(to_string(mutationPorcentage) + '%', "Chance de mutacao", 1);
+	logData(me + '%', "Margem de erro para resultado", 2);
+}

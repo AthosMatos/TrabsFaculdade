@@ -4,6 +4,7 @@
 #include <iostream>
 #include <vector>
 #include "structs.h"
+#include <future>
 
 using namespace std;
 
@@ -52,19 +53,6 @@ bool MenorPaMaior_id_pair(pair<int, bool> i, pair<int, bool> j)
 {
     return i.first < j.first;
 }
-
-
-int CalcValorTotal(vector<individuo>individuos)
-{
-    int soma = 0;
-
-    for (auto& i : individuos)
-    {
-        soma += i.ValorTotal;
-    }
-    return soma;
-}
-
 
 void logIndividuos(vector <individuo> individuos)
 {

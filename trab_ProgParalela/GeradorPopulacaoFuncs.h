@@ -1,9 +1,7 @@
 #pragma once
-#include "structs.h"
 #include <algorithm> 
 #include "HelperFuncs.h"
 #include <random>
-
 
 void stdIndividuoGeneratorPesoBased(vector<individuo>& individuos, vector <item> items, int pesoMax, int& valorTotalSomaRef)
 {
@@ -81,47 +79,48 @@ void GerarEvolucao(individuo& evolucao,int numIndividuos, int geracao, vector <i
 	evolucao.ValorTotal = TempValor;
 }
 
-void GerarIndividuo_MenoresPesos(vector<individuo>& individuos, vector <item> items,int pesoMax,int valorMax, int& valorTotalSomaRef)
+
+thread GerarIndividuo_MenoresPesos(vector<individuo>& individuos, vector <item> items,int pesoMax,int valorMax, int& valorTotalSomaRef)
 {
 	sort(items.begin(), items.end(), MenorPaMaior_Peso);
-	stdIndividuoGeneratorPesoAndValorBased(individuos, items, pesoMax, valorMax, valorTotalSomaRef);
+	return thread(stdIndividuoGeneratorPesoAndValorBased, ref(individuos), items, pesoMax, valorMax, ref(valorTotalSomaRef));
 }
-void GerarIndividuo_MenoresPesos(vector<individuo>& individuos, vector <item> items, int pesoMax, int& valorTotalSomaRef)
+thread GerarIndividuo_MenoresPesos(vector<individuo>& individuos, vector <item> items, int pesoMax, int& valorTotalSomaRef)
 {
 	sort(items.begin(), items.end(), MenorPaMaior_Peso);
-	stdIndividuoGeneratorPesoBased(individuos, items, pesoMax, valorTotalSomaRef);
+	return thread(stdIndividuoGeneratorPesoBased, ref(individuos), items, pesoMax, ref(valorTotalSomaRef));
 }
 
-void GerarIndividuo_MenoresValores(vector<individuo>& individuos, vector <item> items, int pesoMax, int valorMax, int& valorTotalSomaRef)
+thread GerarIndividuo_MenoresValores(vector<individuo>& individuos, vector <item> items, int pesoMax, int valorMax, int& valorTotalSomaRef)
 {
 	sort(items.begin(), items.end(), MenorPaMaior_Valor);
-	stdIndividuoGeneratorPesoAndValorBased(individuos, items, pesoMax, valorMax, valorTotalSomaRef);
+	return thread(stdIndividuoGeneratorPesoAndValorBased, ref(individuos), items, pesoMax, valorMax, ref(valorTotalSomaRef));
 }
-void GerarIndividuo_MenoresValores(vector<individuo>& individuos, vector <item> items, int pesoMax, int& valorTotalSomaRef)
+thread GerarIndividuo_MenoresValores(vector<individuo>& individuos, vector <item> items, int pesoMax, int& valorTotalSomaRef)
 {
 	sort(items.begin(), items.end(), MenorPaMaior_Valor);
-	stdIndividuoGeneratorPesoBased(individuos, items, pesoMax, valorTotalSomaRef);
+	return thread(stdIndividuoGeneratorPesoBased, ref(individuos), items, pesoMax, ref(valorTotalSomaRef));
 }
 
 //Mais peso por valor
-void GerarIndividuo_MelhorCustoBeneficioPeso(vector<individuo>& individuos, vector <item> items, int pesoMax, int& valorTotalSomaRef)
+thread GerarIndividuo_MelhorCustoBeneficioPeso(vector<individuo>& individuos, vector <item> items, int pesoMax, int& valorTotalSomaRef)
 {
 	sort(items.begin(), items.end(), MaiorPaMenor_CustoBeneficioPeso);
-	stdIndividuoGeneratorPesoBased(individuos, items, pesoMax, valorTotalSomaRef);
+	return thread(stdIndividuoGeneratorPesoBased, ref(individuos), items, pesoMax, ref(valorTotalSomaRef));
 }
 
 //Mais valor por peso
-void GerarIndividuo_MelhorCustoBeneficioValor(vector<individuo>& individuos, vector <item> items, int pesoMax, int& valorTotalSomaRef)
+thread GerarIndividuo_MelhorCustoBeneficioValor(vector<individuo>& individuos, vector <item> items, int pesoMax, int& valorTotalSomaRef)
 {
 	sort(items.begin(), items.end(), MaiorPaMenor_CustoBeneficioValor);
-	stdIndividuoGeneratorPesoBased(individuos, items, pesoMax, valorTotalSomaRef);
+	return thread(stdIndividuoGeneratorPesoBased, ref(individuos), items, pesoMax, ref(valorTotalSomaRef));
 }
 
-void GerarIndividuo_Ultra_Aleatorio(vector<individuo>& individuos, vector <item> items, int pesoMax, int& valorTotalSomaRef)
+thread GerarIndividuo_Ultra_Aleatorio(vector<individuo>& individuos, vector <item> items, int pesoMax, int& valorTotalSomaRef)
 {
 	random_device rd;
 	auto random = default_random_engine{ rd() };
 	shuffle(items.begin(), items.end(), random);
 
-	stdIndividuoGeneratorPesoBased(individuos, items, pesoMax, valorTotalSomaRef);
+	return thread(stdIndividuoGeneratorPesoBased, ref(individuos), items, pesoMax, ref(valorTotalSomaRef));
 }
