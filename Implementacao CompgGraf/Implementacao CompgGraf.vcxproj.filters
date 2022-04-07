@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="Source.cpp" />
+    <ClCompile Include="CalcRotacao.cpp">
+      <Filter>Calc\CalcRotacao</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcEscala.cpp">
+      <Filter>Calc\CalcEscala</Filter>
+    </ClCompile>
+    <ClCompile Include="Calc.cpp">
+      <Filter>Calc</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcTranslacao.cpp">
+      <Filter>Calc\CalcTranslacao</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Calc">
+      <UniqueIdentifier>{63bbf4ed-6ccf-4c86-b7ab-709fcc1cfce5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Calc\CalcEscala">
+      <UniqueIdentifier>{4c05b2d7-117b-4196-a5a9-906efdeb7f68}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Calc\CalcRotacao">
+      <UniqueIdentifier>{fe633b23-b654-466f-ac71-c2b7ea4dd643}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Calc\CalcTranslacao">
+      <UniqueIdentifier>{27e70fa1-4288-494e-abe9-837bbc3d11d1}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CalcRotacao.hpp">
+      <Filter>Calc\CalcRotacao</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcEscala.hpp">
+      <Filter>Calc\CalcEscala</Filter>
+    </ClInclude>
+    <ClInclude Include="Calc.hpp">
+      <Filter>Calc</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcTranslacao.hpp">
+      <Filter>Calc\CalcTranslacao</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
