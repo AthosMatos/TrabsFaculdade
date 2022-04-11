@@ -12,8 +12,7 @@ private:
 	void CalcX();
 
 private:
-	char ponto;
-	float x, y, z, w;
-	int graus;
+	char coord;
+	float graus;
 };
 

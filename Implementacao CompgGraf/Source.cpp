@@ -1,21 +1,28 @@
 #include "CalcRotacao.hpp" 
 #include "CalcEscala.hpp"
 #include "CalcTranslacao.hpp"
+#include "CalcCamera.h"
+#include "CalcInterseccao.h"
+#include "CalcLuz.h"
 
 int main()
 {
 	CalcRotacao* rotacao;
 	CalcEscala* escala;
 	CalcTranslacao* translacao;
+	CalcCamera* camera;
+	CalcInterseccao* interseccao;
+	CalcLuz* luz;
 
-	//rotacao = new CalcRotacao;
-	//rotacao->PrintResult();
+	//Descomentar a implementacao desejada para o codigo rodar certo
 
+	//luz = new CalcLuz;
+	//interseccao = new CalcInterseccao;
+	//camera = new CalcCamera;
+	rotacao = new CalcRotacao;
 	//escala = new CalcEscala;
-	//escala->PrintResult();
+	//translacao = new CalcTranslacao;
 	
-	translacao = new CalcTranslacao;
-	translacao->PrintResult();
 
 	return 0;
 }

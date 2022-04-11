@@ -7,7 +7,6 @@ public:
 	CalcEscala();
 
 private:
-	float x, y, z, w;
 	float Sx, Sy, Sz;
 };
 

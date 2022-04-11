@@ -96,7 +96,6 @@ individuo Mochila::getIndividuoProbabilities(vector<individuo>& tempIndividuos, 
 		}
 		index++;
 	}
-
 }
 
 
@@ -188,8 +187,6 @@ void Mochila::mutate(individuo& i)
 
 bool Mochila::Evolve()
 {
-	vector <pair<int, float>> Probabilidades;
-
 	for (int i = 0; i < iteracoes; i++)
 	{
 		auto paresIndividuos = FazerPares();

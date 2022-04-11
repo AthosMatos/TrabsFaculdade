@@ -5,6 +5,27 @@
     <ClCompile Include="mochila.cpp">
       <Filter>mochila</Filter>
     </ClCompile>
+    <ClCompile Include="Populacao.cpp">
+      <Filter>GodController\Populacao</Filter>
+    </ClCompile>
+    <ClCompile Include="Individuo.cpp">
+      <Filter>GodController\Populacao\Individuo</Filter>
+    </ClCompile>
+    <ClCompile Include="GodController.cpp">
+      <Filter>GodController</Filter>
+    </ClCompile>
+    <ClCompile Include="Cromossomo.cpp">
+      <Filter>GodController\Populacao\Individuo\Cromossomo</Filter>
+    </ClCompile>
+    <ClCompile Include="Itens.cpp">
+      <Filter>Itens</Filter>
+    </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>Itens\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="PopController.cpp">
+      <Filter>GodController\Populacao\PopController</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="mochila">
@@ -16,6 +37,27 @@
     <Filter Include="Funcs">
       <UniqueIdentifier>{7e2ac669-a561-4ddc-9503-893f719d129d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GodController">
+      <UniqueIdentifier>{c902f09e-9225-43be-a75e-d917a01e354e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GodController\Populacao">
+      <UniqueIdentifier>{6fd4c2cc-4801-43a0-b542-441dc12b56ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GodController\Populacao\Individuo">
+      <UniqueIdentifier>{98966d7a-6afe-4135-8b7b-a1b1b49d60d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GodController\Populacao\Individuo\Cromossomo">
+      <UniqueIdentifier>{74b77f6a-fecc-4886-a231-8e675df29ab0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Itens">
+      <UniqueIdentifier>{7d500f73-44d3-4e58-9915-2fe87b0132b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Itens\Item">
+      <UniqueIdentifier>{dddd0d35-efe0-491b-b00a-e2ecbf2e82d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GodController\Populacao\PopController">
+      <UniqueIdentifier>{2c64846d-ab05-44eb-a20b-2e97e773ceae}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="mochila.h">
@@ -25,11 +67,33 @@
     <ClInclude Include="GeradorPopulacaoFuncs.h">
       <Filter>Funcs</Filter>
     </ClInclude>
-    <ClInclude Include="HelperFuncs.h">
+    <ClInclude Include="Helper.h">
       <Filter>Funcs</Filter>
     </ClInclude>
     <ClInclude Include="itemFuncs.h">
       <Filter>Funcs</Filter>
+    </ClInclude>
+    <ClInclude Include="Populacao.hpp">
+      <Filter>GodController\Populacao</Filter>
+    </ClInclude>
+    <ClInclude Include="Individuo.hpp">
+      <Filter>GodController\Populacao\Individuo</Filter>
+    </ClInclude>
+    <ClInclude Include="GodController.hpp">
+      <Filter>GodController</Filter>
+    </ClInclude>
+    <ClInclude Include="Cromossomo.hpp">
+      <Filter>GodController\Populacao\Individuo\Cromossomo</Filter>
+    </ClInclude>
+    <ClInclude Include="Itens.hpp">
+      <Filter>Itens</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="Item.hpp">
+      <Filter>Itens\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="PopController.hpp">
+      <Filter>GodController\Populacao\PopController</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -48,5 +112,8 @@
     <None Include="test5">
       <Filter>tests</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="trab_ProgParalela.rc" />
   </ItemGroup>
 </Project>

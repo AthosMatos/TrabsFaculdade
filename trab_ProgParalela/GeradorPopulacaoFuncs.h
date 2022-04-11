@@ -59,7 +59,7 @@ void stdIndividuoGeneratorPesoAndValorBased(vector<individuo>& individuos, vecto
 	individuos.push_back(Tempindividuo);
 }
 
-void GerarEvolucao(individuo& evolucao,int numIndividuos, int geracao, vector <item> items)
+void GerarEvolucao(individuo& evolucao,int numIndividuos, int geracao, vector <item> items) 
 {
 	evolucao.geracao = geracao;
 	evolucao.id = numIndividuos + 1;

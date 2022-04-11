@@ -8,11 +8,20 @@
     <ClCompile Include="CalcEscala.cpp">
       <Filter>Calc\CalcEscala</Filter>
     </ClCompile>
+    <ClCompile Include="CalcTranslacao.cpp">
+      <Filter>Calc\CalcTranslacao</Filter>
+    </ClCompile>
     <ClCompile Include="Calc.cpp">
       <Filter>Calc</Filter>
     </ClCompile>
-    <ClCompile Include="CalcTranslacao.cpp">
-      <Filter>Calc\CalcTranslacao</Filter>
+    <ClCompile Include="CalcCamera.cpp">
+      <Filter>Calc\CalcCamera</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcInterseccao.cpp">
+      <Filter>Calc\CalcInterseccao</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcLuz.cpp">
+      <Filter>Calc\CalcLuz</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -28,6 +37,15 @@
     <Filter Include="Calc\CalcTranslacao">
       <UniqueIdentifier>{27e70fa1-4288-494e-abe9-837bbc3d11d1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Calc\CalcCamera">
+      <UniqueIdentifier>{f114eeaa-1167-4127-89d8-c4f49fa895ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Calc\CalcInterseccao">
+      <UniqueIdentifier>{e1d2c21e-45f6-4b3d-941d-54d2a0425a9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Calc\CalcLuz">
+      <UniqueIdentifier>{45f000a5-0baf-422c-9299-ecd8867274ef}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CalcRotacao.hpp">
@@ -36,11 +54,20 @@
     <ClInclude Include="CalcEscala.hpp">
       <Filter>Calc\CalcEscala</Filter>
     </ClInclude>
+    <ClInclude Include="CalcTranslacao.hpp">
+      <Filter>Calc\CalcTranslacao</Filter>
+    </ClInclude>
     <ClInclude Include="Calc.hpp">
       <Filter>Calc</Filter>
     </ClInclude>
-    <ClInclude Include="CalcTranslacao.hpp">
-      <Filter>Calc\CalcTranslacao</Filter>
+    <ClInclude Include="CalcCamera.h">
+      <Filter>Calc\CalcCamera</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcInterseccao.h">
+      <Filter>Calc\CalcInterseccao</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcLuz.h">
+      <Filter>Calc\CalcLuz</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

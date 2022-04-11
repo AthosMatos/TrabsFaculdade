@@ -140,14 +140,20 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Calc.cpp" />
+    <ClCompile Include="CalcCamera.cpp" />
     <ClCompile Include="CalcEscala.cpp" />
+    <ClCompile Include="CalcInterseccao.cpp" />
+    <ClCompile Include="CalcLuz.cpp" />
     <ClCompile Include="CalcRotacao.cpp" />
     <ClCompile Include="CalcTranslacao.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Calc.hpp" />
+    <ClInclude Include="CalcCamera.h" />
     <ClInclude Include="CalcEscala.hpp" />
+    <ClInclude Include="CalcInterseccao.h" />
+    <ClInclude Include="CalcLuz.h" />
     <ClInclude Include="CalcRotacao.hpp" />
     <ClInclude Include="CalcTranslacao.hpp" />
   </ItemGroup>

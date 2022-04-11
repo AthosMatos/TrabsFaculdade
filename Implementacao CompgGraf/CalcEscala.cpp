@@ -2,20 +2,44 @@
 
 CalcEscala::CalcEscala()
 {
-	cout << "Calc Escala" << endl;
-	cout << "Ponto x: "; cin >> x;
-	cout << "Ponto y: "; cin >> y;
-	cout << "Ponto z: "; cin >> z;
-	cout << "Ponto w: "; cin >> w;
+	cout << "|| Calc Escala ||" << endl << endl;
+
+	cout << "Numero de Pontos do poligono: "; cin >> NumPontos;
+
+	for (int i = 0; i < NumPontos; i++)
+	{
+		ponto4 ptemp;
+
+		cout << "Ponto " << pontos4.size() + 1 << endl;
+
+		cout << "x: "; cin >> ptemp.x;
+		cout << "y: "; cin >> ptemp.y;
+		cout << "z: "; cin >> ptemp.z;
+		ptemp.w = 1;
+
+		cout << "Ponto " << pontos4.size() + 1 << "(" << ptemp.x << ',' << ptemp.y << ',' << ptemp.z << ',' << ptemp.w << ')' << endl << endl;
+
+		pontos4.push_back(ptemp);
+	}
+
+
+	cout << "Ponto para Escala" << endl;
 
 	cout << "Ponto Sx: "; cin >> Sx;
 	cout << "Ponto Sy: "; cin >> Sy;
-	cout << "Ponto Sz: "; cin >> Sz;
+	cout << "Ponto Sz: "; cin >> Sz; cout << endl;
 
-	vetoresResult.push_back(x * Sx); //Sx
-	vetoresResult.push_back(y * Sy); //Sy
-	vetoresResult.push_back(z * Sz); //Sz
-	vetoresResult.push_back(w * 1); //Sw
+	int index = 1;
+	for (auto& p : pontos4)
+	{
+		cout << "Novo ponto " << index << "(" << p.x * Sx << ","
+			<< p.y * Sy << ","
+			<< p.z * Sz << ","
+			<< p.w * 1 << ")" << endl;
+
+		index++;
+	}
+	
 }
 
 

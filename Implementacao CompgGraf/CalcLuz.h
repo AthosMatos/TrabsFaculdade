@@ -1,11 +1,13 @@
 #pragma once
 #include "Calc.hpp"
 
-class CalcTranslacao : public Calc
+class CalcLuz:Calc
 {
 public:
-	CalcTranslacao();
+	CalcLuz();
 
+private:
+	ponto3 P, n, I, pos, Kd, Ke;
 private:
 	float Tx, Ty, Tz;
 
