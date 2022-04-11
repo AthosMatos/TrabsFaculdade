@@ -1,6 +1,5 @@
 #include "mochila.h"
 #include "GeradorPopulacaoFuncs.h"
-#include "HelperFuncs.h"
 #include "itemFuncs.h"
 
 Mochila::Mochila()

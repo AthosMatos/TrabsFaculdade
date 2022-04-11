@@ -5,6 +5,21 @@ bool MaiorPaMenor_Probs(pair<int, float> i, pair<int, float> j)
 	return i.second > j.second;
 }
 
+bool MaiorPaMenor_ValorIndividuo(Individuo* i, Individuo* j)
+{
+	return i->valor > j->valor;
+}
+
+bool MenorPaMaior_id_individuo(Individuo* i, Individuo* j)
+{
+	return i->id < j->id;
+}
+
+PopController::PopController()
+{
+	itens = new Itens;
+}
+
 vector<pair<Individuo*, Individuo*>> PopController::FazerPares(vector<Individuo*> poptemp)
 {
 	vector<pair<Individuo*, Individuo*>> pares;
@@ -101,7 +116,6 @@ Individuo* PopController::getIndividuoProbabilities(vector<pair<int, float>> tem
 vector<Individuo*> PopController::Cruzar(pair<Individuo*, Individuo*> par, int media_filhos, int numIndivids, int geracao)
 {
 	vector<Individuo* >filhos;
-	Itens* itens = new Itens;
 
 	random_device r;
 	default_random_engine e1(r());
@@ -151,4 +165,90 @@ vector<Individuo*> PopController::Cruzar(pair<Individuo*, Individuo*> par, int m
 	}
 
 	return filhos;
+}
+
+void PopController::CheckMutation(vector<Individuo*> NewGeneration,int porcentagem_mutacao)
+{
+	default_random_engine e1(r());
+	uniform_int_distribution<> uniform_dist(0, 100);
+
+	for (auto& G : NewGeneration)
+	{
+		int value = uniform_dist(e1);
+		if (value <= porcentagem_mutacao)
+		{
+			mutate(G);
+			return;
+		}
+	}
+}
+
+void PopController::mutate(Individuo* i)
+{
+	default_random_engine e1(r());
+	uniform_int_distribution<> uniform_dist(0, i->cromossomo->getGenes().size());
+
+	int index = uniform_dist(e1);
+
+	i->cromossomo->genes[index] = !i->cromossomo->genes[index];
+
+}
+
+Individuo* PopController::CriterioParada(Individuo* indiv, int margem_erro)
+{
+	Individuo* Winner;
+
+	if (indiv->peso <= itens->pesoMax)
+	{
+		if (indiv->valor >= (itens->valorOtimo - ((itens->valorOtimo * margem_erro) / 100))
+			&&
+			indiv->valor <= (itens->valorOtimo + ((itens->valorOtimo * margem_erro) / 100)))
+		{
+			Winner = new Individuo(indiv->id, indiv->geracao);
+			Winner->peso = indiv->peso;
+			Winner->valor = indiv->valor;
+			
+			return Winner;
+		}
+	}
+
+	return NULL;
+}
+
+vector<Individuo*> PopController::PexteBulbonica(vector<Individuo*> pop, int popMax)
+{
+	sort(pop.begin(), pop.end(), MaiorPaMenor_ValorIndividuo);
+
+	for (int index = pop.size() * 0.75; index < pop.size(); index++)
+	{
+		if ((pop[index]->peso > itens->pesoMax))
+		{
+			pop.erase(pop.begin() + index);//colocar pra deletar o ponteiro tbm
+			index--;
+		}
+	}
+
+	pop = OrderUpdatedIndividuos(pop);
+
+	for (int index = popMax; index < pop.size(); index++)
+	{
+		pop.erase(pop.begin() + index);
+		index--;
+	}
+
+	return pop;
+}
+
+vector<Individuo*> PopController::OrderUpdatedIndividuos(vector<Individuo*> pop)
+{
+	sort(pop.begin(), pop.end(), MenorPaMaior_id_individuo);
+
+	int index = 1;
+	for (auto& i : pop)
+	{
+		i->id = index;
+		index++;
+	}
+
+	return pop;
 }

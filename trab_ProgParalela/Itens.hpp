@@ -15,7 +15,7 @@ public:
 	vector<Item*> GetVector();
 	void release();
 
-protected:
+public:
 	static vector<Item*> itens;
 
 	static int pesoMax; //peso max suportado
@@ -24,5 +24,6 @@ protected:
 	static int PesoOtimo; //peso otimo desejado
 
 	friend class GodController;
+
 };
 

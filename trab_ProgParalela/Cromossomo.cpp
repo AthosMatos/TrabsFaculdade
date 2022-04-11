@@ -72,3 +72,8 @@ pair<int, int> Cromossomo::Gerar(pair<Cromossomo*, Cromossomo*> par, int pontoCo
 	return pair<int, int>(TempPeso, TempValor);
 }
 
+map<int, bool> Cromossomo::getGenes()
+{
+	return genes;
+}
+

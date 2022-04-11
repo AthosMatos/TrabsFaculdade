@@ -18,4 +18,3 @@ public:
 
 	friend class Populacao;
 };
-

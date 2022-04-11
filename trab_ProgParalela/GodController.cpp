@@ -2,10 +2,10 @@
 
 int GodController::ultimaPopCriada = 0;
 
-void GodController::GerarPopulacao(int numIndivs,int mediaFilhos, int chanceAcimadoPeso)
+void GodController::GerarPopulacao(int numIndivs,int mediaFilhos, int chanceAcimadoPeso,int porcentagem_mutacao)
 {
 	Populacao* populacao;
-	populacao = new Populacao(numIndivs, mediaFilhos);
+	populacao = new Populacao(numIndivs, mediaFilhos, porcentagem_mutacao);
 	populacao->GerarPopInicial(chanceAcimadoPeso);
 	populacoes.insert(pair<int, Populacao*>(populacoes.size() + 1, populacao));
 	ultimaPopCriada = populacoes.size();

@@ -1,11 +1,13 @@
 #include "Populacao.hpp"
 
-Populacao::Populacao(int num_individuos, int media_filhos)
+Populacao::Populacao(int num_individuos, int media_filhos,int porcentagem_mutacao, float margem_erro)
 {
 	this->num_individuos = num_individuos;
 	this->media_filhos = media_filhos;
 	geracao = 1;
 	valor_total_acomulado = 0;
+	this->porcentagem_mutacao = porcentagem_mutacao;
+	this->margem_erro = margem_erro;
 }
 
 void Populacao::GerarPopInicial(int chanceAcimadoPeso)
@@ -42,20 +44,21 @@ bool Populacao::EvoluirPop(int iteracoes)
 			}
 		}
 
-		/*CheckMutation(NewGenerationRef);
+		CheckMutation(NewGeneration, porcentagem_mutacao);
 		geracao++;
 
 		bool stop = false;
 		for (auto& NG : NewGeneration)
 		{
-			individuos.push_back(NG);
+			pop.push_back(NG);
+			winner = CriterioParada(NG, margem_erro);
 
-			if (CriterioParada(NG)) stop = true;
+			if (winner != NULL) stop = true;
 		}
 
 		if (stop)
 		{
-			OrderUpdatedIndividuos();
+			/*/OrderUpdatedIndividuos();
 
 			logData(geracoes - 1, "Iteracao: ", 0);
 			logData(individuos.size(), "Numero de individuos na Populacao: ", 0);
@@ -69,20 +72,22 @@ bool Populacao::EvoluirPop(int iteracoes)
 				endl << endl;
 
 			logIndividuosReducedData(individuos);
-
+			*/
 			return true;
 		}
-		else PexteBulbonica();
+		else pop = PexteBulbonica(pop, num_individuos);
 
-		logData(geracoes - 1, "Iteracao: ", 0);
-		logData(individuos.size(), "Numero de individuos na Populacao: ", 0);
-		logData(geracoes, " Numero de geracoes: ", 1);
-		*/
+		//logData(geracoes - 1, "Iteracao: ", 0);
+		//logData(individuos.size(), "Numero de individuos na Populacao: ", 0);
+		//logData(geracoes, " Numero de geracoes: ", 1);
+		
 
 	}
 	//logIndividuosReducedData(individuos);
 	return false;
 }
+
+
 
 void Populacao::release()
 {
