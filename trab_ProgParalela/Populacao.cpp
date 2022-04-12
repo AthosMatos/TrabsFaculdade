@@ -68,15 +68,15 @@ void Populacao::GerarPopInicial(int chanceAcimadoPeso)
 	auto random = default_random_engine{ rd() };
 	uniform_int_distribution<> uniform_dist(1, 100);
 
-	Individuo* indiv1 = new Individuo(1, geracao);
+	/*Individuo* indiv1 = new Individuo(1, geracao);
 	indiv1->CreatePerfectCustoBene(0);
 	pop.push_back(indiv1);
 
 	Individuo* indiv2 = new Individuo(2, geracao);
 	indiv2->CreatePerfectValor(0);
 	pop.push_back(indiv2);
-
-	for (int i = 2; i < num_individuos; i++)
+	*/
+	for (int i = 0; i < num_individuos; i++)
 	{
 		Individuo* indiv = new Individuo(i + 1, geracao);
 
@@ -86,6 +86,8 @@ void Populacao::GerarPopInicial(int chanceAcimadoPeso)
 		valor_total_acomulado += indiv->valor;
 		pop.push_back(indiv);
 	}
+
+	sort(pop.begin(), pop.end(), MaiorPaMenor_ValorIndividuo);
 }
 
 bool Populacao::EvoluirPop(int iteracoes)
@@ -353,13 +355,13 @@ void Populacao::CriterioParada(Individuo* indiv, int margem_erro)
 
 void Populacao::PexteBulbonica(int popMax)
 {
-	int fatEliminatorPorcentage = 100; //fazer paramentro disso????
-	int twinEliminatorPorcentage = 100; //fazer paramentro disso????
+	int fatEliminatorPorcentage = 10; //fazer paramentro disso????
+	int twinEliminatorPorcentage = 10; //fazer paramentro disso????
 
 	default_random_engine e1(r());
 
 	sort(pop.begin(), pop.end(), MaiorPaMenor_ValorIndividuo);
-	uniform_int_distribution<> uniform_dist(0, 100);
+	uniform_int_distribution<> uniform_dist(1, 100);
 
 	for (int i = 0; i < pop.size(); i++)// deleta uma quantidade de individuos com valor repetido
 	{

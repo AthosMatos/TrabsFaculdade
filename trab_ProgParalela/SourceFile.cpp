@@ -16,7 +16,7 @@ int main()
 	//mochila->GerarPopInicial();
 	//mochila->Evoluir();
 	Itens* itens = new Itens();
-	itens->SetItens("test3");
+	itens->SetItens("test1");
 	
 	GodController* god = new GodController;
 	god->GerarPopulacao();
