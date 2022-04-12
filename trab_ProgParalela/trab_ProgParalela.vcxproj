@@ -154,7 +154,6 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="PopController.cpp" />
     <ClCompile Include="Populacao.cpp" />
     <ClCompile Include="SourceFile.cpp" />
   </ItemGroup>
@@ -173,7 +172,6 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
-    <ClInclude Include="PopController.hpp" />
     <ClInclude Include="Populacao.hpp" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="structs.h" />

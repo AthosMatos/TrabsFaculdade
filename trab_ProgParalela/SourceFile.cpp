@@ -16,11 +16,11 @@ int main()
 	//mochila->GerarPopInicial();
 	//mochila->Evoluir();
 	Itens* itens = new Itens();
-	itens->SetItens("test1");
+	itens->SetItens("test3");
 	
 	GodController* god = new GodController;
 	god->GerarPopulacao();
-	god->EvoluirPopulacao();
+	god->EvoluirPopulacao(10);
 
 	//geraitems
 	//gerarpopinit

@@ -1,8 +1,17 @@
 #include "Cromossomo.hpp"
 
-void Cromossomo::release()
+bool MenorPaMaior_Peso(Item* i, Item* j)
 {
-	Itens::release();
+	return i->peso < j->peso;
+}
+bool MaiorPaMenor_CustoBeneficioValor(Item* i, Item* j)
+{
+	return (i->valor / i->peso) > (j->valor / j->peso);
+}
+
+bool MenorPaMaior_Valor(Item* i, Item* j)
+{
+	return i->valor < j->valor;
 }
 
 bool Cromossomo::isGeneActive(int id)
@@ -25,6 +34,78 @@ pair<int, int> Cromossomo::GerarAleatoriamente(int chanceAcimaPeso)
 	for (int i = 0; i < itemscpy.size(); i++)
 	{
 		if ((TempPeso + itemscpy[i]->peso < pesoMax) || (uniform_dist(random) <= chanceAcimaPeso))
+		{
+			genes.insert(pair<int, bool>(itemscpy[i]->id, true));
+			TempPeso += itemscpy[i]->peso;
+			TempValor += itemscpy[i]->valor;
+		}
+		else
+		{
+			genes.insert(pair<int, bool>(itemscpy[i]->id, false));
+		}
+	}
+	return pair<int, int>(TempPeso, TempValor);
+}
+
+pair<int, int> Cromossomo::GerarPerfeitoPeso(int chanceAcimaPeso)
+{
+	auto itemscpy = itens;
+	sort(itemscpy.begin(), itemscpy.end(), MenorPaMaior_Peso); //randomizando para a ordem dos intens sempre serem aleatoria
+
+	int TempPeso = 0;
+	int TempValor = 0;
+
+	for (int i = 0; i < itemscpy.size(); i++)
+	{
+		if ((TempPeso + itemscpy[i]->peso < pesoMax))
+		{
+			genes.insert(pair<int, bool>(itemscpy[i]->id, true));
+			TempPeso += itemscpy[i]->peso;
+			TempValor += itemscpy[i]->valor;
+		}
+		else
+		{
+			genes.insert(pair<int, bool>(itemscpy[i]->id, false));
+		}
+	}
+	return pair<int, int>(TempPeso, TempValor);
+}
+
+pair<int, int> Cromossomo::GerarPerfeitoValor(int chanceAcimaPeso)
+{
+	auto itemscpy = itens;
+	sort(itemscpy.begin(), itemscpy.end(), MenorPaMaior_Valor); //randomizando para a ordem dos intens sempre serem aleatoria
+
+	int TempPeso = 0;
+	int TempValor = 0;
+
+	for (int i = 0; i < itemscpy.size(); i++)
+	{
+		if ((TempPeso + itemscpy[i]->peso < pesoMax))
+		{
+			genes.insert(pair<int, bool>(itemscpy[i]->id, true));
+			TempPeso += itemscpy[i]->peso;
+			TempValor += itemscpy[i]->valor;
+		}
+		else
+		{
+			genes.insert(pair<int, bool>(itemscpy[i]->id, false));
+		}
+	}
+	return pair<int, int>(TempPeso, TempValor);
+}
+
+pair<int, int> Cromossomo::GerarPerfeitoValorCustoBene(int chanceAcimaPeso)
+{
+	auto itemscpy = itens;
+	sort(itemscpy.begin(), itemscpy.end(), MaiorPaMenor_CustoBeneficioValor); //randomizando para a ordem dos intens sempre serem aleatoria
+
+	int TempPeso = 0;
+	int TempValor = 0;
+
+	for (int i = 0; i < itemscpy.size(); i++)
+	{
+		if ((TempPeso + itemscpy[i]->peso < pesoMax))
 		{
 			genes.insert(pair<int, bool>(itemscpy[i]->id, true));
 			TempPeso += itemscpy[i]->peso;

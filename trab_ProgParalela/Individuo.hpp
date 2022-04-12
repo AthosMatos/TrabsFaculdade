@@ -6,7 +6,12 @@ class Individuo
 public:
 	Individuo(int id, int geracao);
 	void CreateRandom(int chanceAcimadoPeso);
+	void CreatePerfectValor(int chanceAcimadoPeso);
+	void CreatePerfectPeso(int chanceAcimadoPeso);
+	void CreatePerfectCustoBene(int chanceAcimadoPeso);
 	void Create(int chanceAcimadoPeso, pair<Cromossomo*, Cromossomo*> par, int pontoCorte, bool turn);
+	void UpdateDados();
+
 	void release(); //limpando memoria
 	
 public:

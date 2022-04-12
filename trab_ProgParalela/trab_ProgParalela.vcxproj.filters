@@ -23,9 +23,6 @@
     <ClCompile Include="Item.cpp">
       <Filter>Itens\Item</Filter>
     </ClCompile>
-    <ClCompile Include="PopController.cpp">
-      <Filter>GodController\Populacao\PopController</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="mochila">
@@ -54,9 +51,6 @@
     </Filter>
     <Filter Include="Itens\Item">
       <UniqueIdentifier>{dddd0d35-efe0-491b-b00a-e2ecbf2e82d2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GodController\Populacao\PopController">
-      <UniqueIdentifier>{2c64846d-ab05-44eb-a20b-2e97e773ceae}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -91,9 +85,6 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="Item.hpp">
       <Filter>Itens\Item</Filter>
-    </ClInclude>
-    <ClInclude Include="PopController.hpp">
-      <Filter>GodController\Populacao\PopController</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
