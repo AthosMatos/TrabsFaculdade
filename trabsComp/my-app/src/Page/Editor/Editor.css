@@ -1,0 +1,22 @@
+.EditorContainer
+{
+    position: absolute;
+    width: 90vw;
+    border: 3px solid #5e4158;
+    height: 82vh;
+    margin: 9vh 5vw 9vw 5vw;
+    background-color: #160215;
+    color: rgb(202, 202, 202);
+    text-align: left;
+    overflow: hidden;
+}
+.InputStyle
+{
+    background-color: #160215;
+    outline: none !important;
+    border:none;
+
+    color: white;
+    width: 90vw;
+}
+
