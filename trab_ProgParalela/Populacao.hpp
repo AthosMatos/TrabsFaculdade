@@ -1,5 +1,6 @@
 #pragma once
 #include "Individuo.hpp"
+#include <thread>
 
 using namespace std;
 
@@ -7,7 +8,7 @@ class Populacao
 {
 public:
 	//Iniciador de Populacoes
-	Populacao(int NumIndivids, int media_filhos, int porcentagem_mutacao, float margem_erro = 0.5);
+	Populacao(int NumIndivids, int media_filhos, int porcentagem_mutacao, float margem_erro = 0.5,int numThreads = 4);
 
 	void GerarPopInicial(int chanceAcimadoPeso);
 	bool EvoluirPop(int iteracoes);
@@ -22,17 +23,22 @@ private:
 	int CalcValorTotal(vector<Individuo*> individuos);
 	vector<pair<int, float>> CalcProbabilidades();
 	Individuo* getIndividuoProbabilities(vector<pair<int, float>> tempProbabilidades);
-	vector<Individuo*> Cruzar(pair<Individuo*, Individuo*> par, int media_filhos, int numIndivids, int geracao);
-	void CheckMutation(vector<Individuo*> NewGeneration, int porcentagem_mutacao);
+	void Cruzar(pair<Individuo*, Individuo*> par, int numIndivids, int index);
+	void CheckMutation(Individuo* Teen);
 	void mutate(Individuo* i);
 	void CriterioParada(Individuo* indiv, int margem_erro);
 	void PexteBulbonica(int popMax);
 	void OrderUpdatedIndividuos();
 
 private:
+	void CruzarThreaded(vector<pair<Individuo*, Individuo*>> paresIndividuos, float start, float end, int index);
+
+private:
 	vector<Individuo*> pop;
 	vector<Individuo*> popTemp;
-	
+	vector<Individuo*> NewGeneration;
+	vector<thread> threads;
+
 private:
 	map <int,int> valoresPesosUsados; //map para valores achar individuos com valores repetidos mais rapido e deletar eles da populacao
 
@@ -43,6 +49,7 @@ private:
 	int valor_total_acomulado; //soma de todos os valore dos individuos da populacao
 	int porcentagem_mutacao;
 	float margem_erro;
+	int numThreads;
 
 	Itens* itens;
 

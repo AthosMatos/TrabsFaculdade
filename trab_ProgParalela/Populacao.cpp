@@ -51,7 +51,7 @@ void logIndividuosReducedData(vector <Individuo*> individuos)
 }
 
 
-Populacao::Populacao(int num_individuos, int media_filhos,int porcentagem_mutacao, float margem_erro)
+Populacao::Populacao(int num_individuos, int media_filhos,int porcentagem_mutacao, float margem_erro, int numThreads)
 {
 	this->num_individuos = num_individuos;
 	this->media_filhos = media_filhos;
@@ -60,6 +60,7 @@ Populacao::Populacao(int num_individuos, int media_filhos,int porcentagem_mutaca
 	this->porcentagem_mutacao = porcentagem_mutacao;
 	this->margem_erro = margem_erro;
 	itens = new Itens;
+	this->numThreads = numThreads;
 }
 
 void Populacao::GerarPopInicial(int chanceAcimadoPeso)
@@ -90,24 +91,36 @@ void Populacao::GerarPopInicial(int chanceAcimadoPeso)
 	sort(pop.begin(), pop.end(), MaiorPaMenor_ValorIndividuo);
 }
 
+void Populacao::CruzarThreaded(vector<pair<Individuo*, Individuo*>> paresIndividuos, float start, float end, int index)
+{
+	for (int i = (int)start; i < (int)end; i++)
+	{
+		cout << "thread " << index << endl;
+		Cruzar(paresIndividuos[i], pop.size() + NewGeneration.size(),index);
+	}
+}
+
 bool Populacao::EvoluirPop(int iteracoes)
 {
 	for (int i = 0; i < iteracoes; i++)
 	{
-		vector<Individuo*> NewGeneration;
+		NewGeneration.clear();
 
 		auto paresIndividuos = FazerPares();
 
-		for (auto& p : paresIndividuos)
-		{
-			auto filhos = Cruzar(p, media_filhos, pop.size() + NewGeneration.size(), geracao + 1);
+		float intervalo = (float)paresIndividuos.size() / (float)numThreads;
 
-			for (auto& f : filhos)
-			{
-				NewGeneration.push_back(f);
-			}
+		for (int thrds = 0; thrds < numThreads; thrds++)
+		{
+			thread t(&Populacao::CruzarThreaded, this, paresIndividuos, thrds * intervalo, (thrds + 1) * intervalo, thrds);
+			threads.push_back(move(t));
 		}
-		CheckMutation(NewGeneration, porcentagem_mutacao);
+
+		for (auto& t : threads)
+		{
+			t.join();
+		}
+
 		geracao++;
 
 		bool stop = false;
@@ -255,16 +268,16 @@ Individuo* Populacao::getIndividuoProbabilities(vector<pair<int, float>> tempPro
 	}
 }
 
-vector<Individuo*> Populacao::Cruzar(pair<Individuo*, Individuo*> par, int media_filhos, int numIndivids, int geracao)
+void Populacao::Cruzar(pair<Individuo*, Individuo*> par, int numIndivids, int index)
 {
-	vector<Individuo* >filhos;
-
 	random_device r;
 	default_random_engine e1(r());
 	uniform_int_distribution<> uniform_dist(1, itens->GetVector().size());//gerador de numero aleatorio de 1 a (total de itens)
 	uniform_int_distribution<> uniform_dist2(1, 100);//gerador de numero aleatorio de 1 a 100
 
 	vector<pair<int, int>>childChances;
+
+	//cout << "cruzar" << endl;
 
 	for (int i = 0; i < 5; i++)
 	{
@@ -298,32 +311,34 @@ vector<Individuo*> Populacao::Cruzar(pair<Individuo*, Individuo*> par, int media
 
 	for (int i = 0; i < media_filhos; i++)
 	{
-		Individuo* filho = new Individuo(numIndivids + i + 1, geracao);
+		cout << "creating filho thread:"<< index << endl;
+		Individuo* filho = new Individuo(numIndivids + i + 1, geracao+1);
 		filho->Create(0, pair<Cromossomo*, Cromossomo*>(par.first->cromossomo, par.second->cromossomo), pontoCorte, turn);
 
-		filhos.push_back(filho);
+		//cout << "check mutation" << endl;
+		CheckMutation(filho); //changed position to make it simpler
+
+		NewGeneration.push_back(filho);
 		turn = !turn;
 		if (turn) pontoCorte = uniform_dist(e1);
 	}
 
-	return filhos;
 }
 
-void Populacao::CheckMutation(vector<Individuo*> NewGeneration, int porcentagem_mutacao)
+void Populacao::CheckMutation(Individuo* Teen)
 {
 	default_random_engine e1(r());
 	uniform_int_distribution<> uniform_dist(0, 100);
 
-	for (auto& G : NewGeneration)
+	
+	int value = uniform_dist(e1);
+	if (value <= porcentagem_mutacao)
 	{
-		int value = uniform_dist(e1);
-		if (value <= porcentagem_mutacao)
-		{
-			mutate(G);
-			G->UpdateDados();
-			return;
-		}
+		mutate(Teen);
+		Teen->UpdateDados();
+		return;
 	}
+	
 }
 
 void Populacao::mutate(Individuo* i)

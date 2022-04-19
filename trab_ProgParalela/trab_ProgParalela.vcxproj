@@ -148,30 +148,15 @@
     <ClCompile Include="Individuo.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="Itens.cpp" />
-    <ClCompile Include="mochila.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="Populacao.cpp" />
     <ClCompile Include="SourceFile.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Cromossomo.hpp" />
-    <ClInclude Include="GeradorPopulacaoFuncs.h" />
     <ClInclude Include="GodController.hpp" />
-    <ClInclude Include="Helper.h" />
     <ClInclude Include="Individuo.hpp" />
     <ClInclude Include="Item.hpp" />
-    <ClInclude Include="itemFuncs.h" />
     <ClInclude Include="Itens.hpp" />
-    <ClInclude Include="mochila.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClInclude>
     <ClInclude Include="Populacao.hpp" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="structs.h" />
