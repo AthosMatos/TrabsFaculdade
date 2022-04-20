@@ -6,8 +6,10 @@ import './Editor.css';
 
 const Editor = () => 
 {
+    const [WhatsNow,setWhatsNow] = useState('')
     const editor = useMemo(() => withHistory(withReact(createEditor())), [])
     const [frase,setFrase] = useState('')
+    const [token,setToken] = useState('')
 
     useEffect(()=>
     {
