@@ -95,7 +95,6 @@ void Populacao::CruzarThreaded(vector<pair<Individuo*, Individuo*>> paresIndivid
 {
 	for (int i = (int)start; i < (int)end; i++)
 	{
-		cout << "thread " << index << endl;
 		Cruzar(paresIndividuos[i], pop.size() + NewGeneration.size(),index);
 	}
 }
@@ -112,13 +111,7 @@ bool Populacao::EvoluirPop(int iteracoes)
 
 		for (int thrds = 0; thrds < numThreads; thrds++)
 		{
-			thread t(&Populacao::CruzarThreaded, this, paresIndividuos, thrds * intervalo, (thrds + 1) * intervalo, thrds);
-			threads.push_back(move(t));
-		}
-
-		for (auto& t : threads)
-		{
-			t.join();
+			CruzarThreaded(paresIndividuos, thrds * intervalo, (thrds + 1) * intervalo, thrds);
 		}
 
 		geracao++;
@@ -311,7 +304,6 @@ void Populacao::Cruzar(pair<Individuo*, Individuo*> par, int numIndivids, int in
 
 	for (int i = 0; i < media_filhos; i++)
 	{
-		cout << "creating filho thread:"<< index << endl;
 		Individuo* filho = new Individuo(numIndivids + i + 1, geracao+1);
 		filho->Create(0, pair<Cromossomo*, Cromossomo*>(par.first->cromossomo, par.second->cromossomo), pontoCorte, turn);
 

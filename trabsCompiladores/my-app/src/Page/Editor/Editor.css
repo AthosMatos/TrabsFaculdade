@@ -1,22 +1,30 @@
+.center 
+{
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }
+
 .EditorContainer
 {
-    position: absolute;
-    width: 90vw;
-    border: 3px solid #5e4158;
-    height: 82vh;
-    margin: 9vh 5vw 9vw 5vw;
-    background-color: #160215;
-    color: rgb(202, 202, 202);
-    text-align: left;
-    overflow: hidden;
+    display:flex;
+    min-height:80vh;
+    max-height:80vh;
+    min-width: 90vw;
+    max-width: 90vw;
+    border-radius:1.5rem;
+    background-color: #361336;
+    box-shadow: 0.0rem 0.0rem 1.5rem ;
 }
-.InputStyle
+
+
+.textContainer
 {
-    background-color: #160215;
-    outline: none !important;
-    border:none;
-
-    color: white;
-    width: 90vw;
+    flex-grow: 1;
+   
+    margin: 2rem 2rem 2rem 2rem;
+    color: rgb(204, 204, 204);
 }
-

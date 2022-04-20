@@ -1,25 +1,69 @@
-import { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react'
+import { createEditor, Descendant, Text as SlateText } from 'slate'
+import { Slate, Editable, withReact } from 'slate-react'
+import { withHistory, } from 'slate-history'
 import './Editor.css';
 
-const Header = () =>
+const Editor = () => 
 {
-    const [s,sets] = useState()
+    const editor = useMemo(() => withHistory(withReact(createEditor())), [])
+    const [frase,setFrase] = useState('')
 
-    const height = useState(20)
+    useEffect(()=>
+    {
+        console.log("frase",frase)
+
+    },[frase])
 
     return (
+    <div className='center'>
         <div className='EditorContainer'>
-            
-            <textarea
-            className='InputStyle'
-            value={s}
-            onChange={()=>{}}
-            rows={44}
-            cols={1}
-            onScroll={()=>{console.log('scrolled')}}
-            />
-        </div>
-    )
-};
+            <Slate editor={editor} value={initialText} >
+                <Editable 
+                className='textContainer'
+                placeholder="Digite aqui..." 
+                onKeyDown={event => 
+                {
+                    // console.log("event.key.length",event)
 
-export default Header;
+                    if (event.key == 'Enter' || event.key == ' ')
+                    {
+                        if(frase!='')
+                        {
+                            //ANALIZAR FRASE 
+                            console.log('Analisar frase',frase)
+                            setFrase('')
+                        }
+                       
+                    }
+                    else
+                    {
+                        if(event.key.length == 1)
+                        {                       
+                            setFrase((prevState)=>
+                            {
+                                return prevState + event.key
+                            })
+                        }   
+                    }  
+                }}
+                />
+            </Slate>
+        </div>    
+    </div>
+    )
+}
+
+const initialText = 
+[
+  { 
+    type: 'paragraph',
+    children: 
+    [
+        { text: '' },
+    ],
+  },
+]
+
+
+export default Editor
