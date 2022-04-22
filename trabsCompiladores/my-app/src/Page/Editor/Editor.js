@@ -104,7 +104,7 @@ const Editor = () =>
                 else if(TokenID==='ano') event.preventDefault()
                 
             }
-        }
+        }dsad
         else if(event.key === ',')
         {
             if(TokenID==='local')
