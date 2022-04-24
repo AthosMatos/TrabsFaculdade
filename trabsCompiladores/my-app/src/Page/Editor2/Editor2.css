@@ -1,0 +1,31 @@
+.center 
+{
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }
+
+.EditorContainer
+{
+    display:flex;
+    min-height:80vh;
+    max-height:80vh;
+    min-width: 90vw;
+    max-width: 90vw;
+    border-radius:1.5rem;
+    background-color: #1a1a1a;
+    box-shadow: 0.0rem 0.0rem 1.5rem ;
+}
+
+
+.textContainer
+{
+    flex-grow: 1;
+    max-width: 82vw;
+    margin: 2vh 4vw 2vh 4vw ;
+    color: #cecece;
+}
+
