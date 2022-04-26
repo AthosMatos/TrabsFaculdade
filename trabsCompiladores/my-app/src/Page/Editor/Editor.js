@@ -6,6 +6,8 @@ import './Editor.css';
 
 const Editor = () => 
 {
+
+
     const [line,setLine] = useState()
     const [CurrentToken,setCurrentToken] = useState('')
     const [PrevTokens,setPrevTokens] = useState([])
@@ -14,6 +16,17 @@ const Editor = () =>
     const [warning,setWarning] = useState()
     const [lineIndex,setlineIndex] = useState(0)
     const editor = useMemo(() => withHistory(withReact(createEditor())),[])
+
+    useEffect(()=>
+    {
+        
+        let va = new Date()
+        va.getFullYear()
+
+        let t = toString(va)
+
+        console.log( va.getFullYear()) 
+        },[])
 
     const isNumber = (key) =>
     {

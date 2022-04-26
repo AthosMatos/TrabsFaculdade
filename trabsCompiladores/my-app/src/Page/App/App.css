@@ -9,6 +9,6 @@
 {
     display: flex;
     flex-direction: column;
-    background-color: #271127;
+    background-color: rgb(216, 216, 216);
     min-height: 100vh;
 }

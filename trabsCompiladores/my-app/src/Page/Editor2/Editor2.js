@@ -3,103 +3,149 @@ import { createEditor, Descendant } from 'slate'
 import { Slate, Editable, withReact } from 'slate-react'
 import { withHistory, } from 'slate-history'
 import './Editor2.css';
+import Switch from "react-switch";
+import { TokensData } from './TokensPreData';
 
 const Editor2 = () => 
 {
-    const [CurrentToken,setCurrentToken] = useState({})
-    const [Tokens,setTokens] = useState([])
-    const [TokenID,setTokenID] = useState('instituicao')
-    const [warning,setWarning] = useState()
+    const [analyzsDone,setAnalyzsDone] = useState(false)
+    const [erros,seterros] = useState([])
     const [WholeTXT,setWholeTXT] = useState('')
-    const [indexStart,setindexStart] = useState(0)
-    const [indexEnd,setindexEnd] = useState(0)
-
-    const editor = useMemo(() => withHistory(withReact(createEditor())),[])
+    const [checked,setChecked] = useState(false)
+    const editor = useMemo(() => withHistory(withReact(createEditor())),[])  
 
     useEffect(()=>
+    {        
+        //console.log(analyzsDone)
+        console.log(erros)
+        seterros([])
+        
+    },[analyzsDone])
+
+    function copyTokenData()
     {
-        if(WholeTXT)
+        const TokensDataCpy = []
+
+        for(let i = 0; i<TokensData.length; i++)
         {
-            setCurrentToken({
-                id:TokenID,
-                token:WholeTXT.slice(indexStart,indexEnd),
-                indexStart:indexStart,
-                indexEnd:indexEnd
+            TokensDataCpy.push(
+            {
+                hasSomething:TokensData[i].hasSomething,
+                TokenName: TokensData[i].TokenName,
+                cutSequence:TokensData[i].cutSequence,
             })
-            //saveToken()
         }
-
-    },[WholeTXT])
- 
-    useEffect(()=>
-    {
-        if(CurrentToken)
-        {
-            console.log(CurrentToken)
-            setindexEnd(indexEnd + 1)
-        }
-
-    },[CurrentToken])
-
-    const isNumber = (key) =>
-    {
-        if(parseInt(key) || parseInt(key)===0)
-        {
-            return true
-        }
-
-        return false
+        return TokensDataCpy
     }
 
-    const analyzSpaces = (value) =>
+    function analyzSpaces ()
     {     
-        for(let index = 0; index < value.length; index++)
+        let line = 1 //linha inicial
+        let column = 1 //coluna inicial
+
+        for(let index = 0; index < WholeTXT.length; index++,column++)
         {
-            let CurrentLine = value[index].children[0].text
-
-            for(let i = 0; i<CurrentLine.length - 1; i++)
-            {   
-                if(CurrentLine[i] === ' ' && CurrentLine[i + 1] === ' ' && CurrentLine[CurrentLine.length - 1] !== ' ') 
+            if(WholeTXT[index] === '\n') //caso tenha um ENTER 
+            {
+                line++ //adiciona mais uma linha
+                column = 1 //reseta as colunas
+            }
+            
+            //caso tenha 2 espacoes em sequencia com um texto entre eles salvar erro
+            if(WholeTXT[index] === ' ' && WholeTXT[index + 1] === ' ' && WholeTXT[WholeTXT.length - 1] !== ' ') 
+            {
+                seterros((prevstate)=>
                 {
-                    setWarning("Mais de um espaco entre as palavras")
-                    //console.log("Espaco mais de uma vez, ERRO")
+                    prevstate.push(
+                    {
+                        linha:line,//linha do erro
+                        coluna:column,//coluna do erro
+                        erro:`Mais de um espaco entre as palavras`,//erro em si 
+                    })
+                    return prevstate
+                })
 
-                    return
-                }
+                console.log("Espaco mais de uma vez, ERRO")
             }
         }
-        
-        setWarning() 
     } 
 
-    const CheckTXT = (value) =>
+    function analyzToken()
     {
-        setWholeTXT(()=>
+        //console.log('TokensData',TokensData)
+
+        const TokensDataCpy = copyTokenData()
+
+        let TokenIndex = 0
+        let lineprevState = 1 //linha inicial
+        let line = 1 //linha inicial
+        let column = 1 //coluna inicial
+        let tokensOK = 0
+
+        //iterando todo o texto
+        for(let index = 0, cutindex = 0; index < WholeTXT.length; index++,column++)
         {
-            let txt = ''
-            for(let i = 0; i < value.length ; i++)
+            if(WholeTXT[index] === '\n') //caso tenha um ENTER 
             {
-                txt += value[i].children[0].text
-                if((i + 1) != value.length) txt += '\n'
+                line++ //adiciona mais uma linha
+                column = 1 //reseta as colunas
             }
-            return txt
-        })        
-       
-       
-        analyzSpaces(value)
+
+            if(WholeTXT[index] === TokensDataCpy[TokenIndex].cutSequence[cutindex]) 
+            {
+                if(cutindex === TokensDataCpy[TokenIndex].cutSequence.length - 1)
+                {
+                    console.log(`Token ${TokensDataCpy[TokenIndex].TokenName} CUTPOINT found`)
+
+                    if(TokensDataCpy[TokenIndex].hasSomething) 
+                    {
+                        console.log(`Token ${TokensDataCpy[TokenIndex].TokenName} found`)
+                        tokensOK++
+                    }
+                    else 
+                    {
+                        console.log(`Token ${TokensDataCpy[TokenIndex].TokenName} NOT found`)
+                        seterros((prevstate)=>
+                        {
+                            prevstate.push(
+                            {
+                                linha:lineprevState,//linha do erro
+                                coluna:column - TokensDataCpy[TokenIndex].cutSequence.length,//coluna do erro
+                                erro:`Token ${TokensDataCpy[TokenIndex].TokenName} vazio`,//erro em si 
+                            })
+                            return prevstate
+                        })
+                    }
+
+                    console.log(`Go Analisys next token`)
+
+                    lineprevState = line
+                    TokenIndex++
+                    cutindex = 0 
+                }
+                else cutindex++                
+            }
+            else 
+            {
+                if(WholeTXT[index]!== ' ' && WholeTXT[index]!== '\n') TokensDataCpy[TokenIndex].hasSomething = true
+                cutindex = 0
+            }
+           
+        }       
     }
-    
-    const saveToken = () =>
-    {              
-        console.log(Tokens)
-          
-        setTokens((prevstate) =>
-        {
-            let array = prevstate
-            array.push(CurrentToken)
-            return array
-        })
-        setindexStart(indexEnd)
+
+    function Compile (value)
+    {
+        //console.log(WholeTXT)
+        
+        analyzSpaces()
+
+        analyzToken()
+
+        setAnalyzsDone(!analyzsDone)
+
+      
+        
     }
 
     return (
@@ -107,34 +153,64 @@ const Editor2 = () =>
         <div style={{
             display:'flex',
             flexDirection:'row',
-            marginLeft:'5%'
+            alignItems:'center',
+            justifyContent:'flex-end'
             }}>
-            <p style={{color: 'rgb(140, 140, 140)',}}>Voce esta editando: </p>
-            <p style={{color:'rgb(0, 200, 0)', marginLeft:'0.4rem',}}>{TokenID}</p>
-            <p style={{color:'rgb(200, 0, 0)', marginLeft:'0.4rem',}}>{warning}</p>
-        
+                <p style={{marginRight:'1rem'}}>Ultra easy mode</p>
+
+                <Switch
+                onChange={()=>
+                {
+                    console.log("Switched")
+                    setChecked(!checked)
+                }}
+                checked={checked}
+                id="normal-switch"
+                />
+              
         </div>
         
         <div className='EditorContainer'>
             <Slate editor={editor} value={initialText} onChange={(value)=>
             { 
-                CheckTXT(value)
+                setWholeTXT(()=>
+                {
+                    let txt = ''
+                    for(let i = 0; i < value.length ; i++)
+                    {
+                        txt += value[i].children[0].text
+                        if((i + 1) !== value.length) txt += '\n'
+                    }
+                    return txt
+                })   
+
+                //CheckTXT(value)
             }}>
                 <Editable 
                 className='textContainer'
-                placeholder="Digite aqui..." 
-                onKeyDown={(event)=>
-                {                     
-                    if(event.key==='Enter')
-                    {
-                        console.log('savetoken')
-                        saveToken()
-                    }
-                }}
-                
+                placeholder="Digite aqui..."                
                 />
             </Slate>
         </div>    
+
+        <button style={
+        {
+            boxShadow: '0.0rem 0.0rem 1.5rem',
+            marginTop:'1rem',
+            width:'7rem',
+            height:'3.5rem',
+            borderRadius:'20rem',
+            backgroundColor:'#181818',
+            color:'#d3d3d3'
+        }} 
+        onClick={()=>
+        {
+            //console.log("ButtonClick")
+            Compile()
+        }}>
+            Compilar
+        </button>
+      
     </div>
     )
 }

@@ -16,7 +16,8 @@
     min-width: 90vw;
     max-width: 90vw;
     border-radius:1.5rem;
-    background-color: #1a1a1a;
+    background-color: #181818;
+  
     box-shadow: 0.0rem 0.0rem 1.5rem ;
 }
 
@@ -26,6 +27,6 @@
     flex-grow: 1;
     max-width: 82vw;
     margin: 2vh 4vw 2vh 4vw ;
-    color: #cecece;
+    color: #d3d3d3;
 }
 

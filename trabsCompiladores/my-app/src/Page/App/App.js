@@ -7,7 +7,7 @@ const App = () =>
 {
   return (
       <div className='AppContainer2'>
-        <Editor/>
+        <Editor2/>
       </div>
   );
 }
