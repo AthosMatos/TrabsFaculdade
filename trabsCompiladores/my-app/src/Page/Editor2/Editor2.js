@@ -8,19 +8,35 @@ import { TokensData } from './TokensPreData';
 
 const Editor2 = () => 
 {
-    const [analyzsDone,setAnalyzsDone] = useState(false)
-    const [erros,seterros] = useState([])
+    const [CompiledErros,setCompiledErros] = useState([])
+    const [CompiledWarnings,setCompiledWarnings] = useState([])
+    const [updateHelper,setupdateHelper] = useState(false)
     const [WholeTXT,setWholeTXT] = useState('')
     const [checked,setChecked] = useState(false)
     const editor = useMemo(() => withHistory(withReact(createEditor())),[])  
 
     useEffect(()=>
-    {        
-        //console.log(analyzsDone)
-        console.log(erros)
-        seterros([])
+    {      
+        if(CompiledErros.length || CompiledWarnings.length)
+        {
+            console.log(CompiledErros)
+            console.log(CompiledWarnings)
+            setCompiledErros([])
+            setCompiledWarnings([])
+           
+        }
         
-    },[analyzsDone])
+    },[updateHelper])
+
+    function isNumber (value) 
+    {
+        if(parseInt(value) || parseInt(value)===0)
+        {
+            return true
+        }
+
+        return false
+    }
 
     function copyTokenData()
     {
@@ -33,6 +49,8 @@ const Editor2 = () =>
                 hasSomething:TokensData[i].hasSomething,
                 TokenName: TokensData[i].TokenName,
                 cutSequence:TokensData[i].cutSequence,
+                typeofdata:TokensData[i].typeofdata,
+                maxamountcharacters:TokensData[i].maxamountcharacters,
             })
         }
         return TokensDataCpy
@@ -54,7 +72,7 @@ const Editor2 = () =>
             //caso tenha 2 espacoes em sequencia com um texto entre eles salvar erro
             if(WholeTXT[index] === ' ' && WholeTXT[index + 1] === ' ' && WholeTXT[WholeTXT.length - 1] !== ' ') 
             {
-                seterros((prevstate)=>
+                setCompiledErros((prevstate)=>
                 {
                     prevstate.push(
                     {
@@ -73,52 +91,106 @@ const Editor2 = () =>
     function analyzToken()
     {
         //console.log('TokensData',TokensData)
+        let erros = []
+        let warnings = []
+        let token = ''
 
         const TokensDataCpy = copyTokenData()
 
         let TokenIndex = 0
-        let lineprevState = 1 //linha inicial
         let line = 1 //linha inicial
+        let lineprevState = 1 //linha inicial
         let column = 1 //coluna inicial
+        let columnprevState = 1 //coluna inicial
         let tokensOK = 0
 
+        
+       // console.log('TokenIndex',TokenIndex)
+        //console.log('lineprevState',lineprevState)
+        //console.log('line',line)
+       // console.log('column',column)
+       // console.log('tokensOK',tokensOK)
+        
         //iterando todo o texto
         for(let index = 0, cutindex = 0; index < WholeTXT.length; index++,column++)
         {
             if(WholeTXT[index] === '\n') //caso tenha um ENTER 
-            {
+            {         
+                //console.log('adding line and reseting column runs')
                 line++ //adiciona mais uma linha
                 column = 1 //reseta as colunas
+                //console.log('column',column)
             }
 
             if(WholeTXT[index] === TokensDataCpy[TokenIndex].cutSequence[cutindex]) 
             {
                 if(cutindex === TokensDataCpy[TokenIndex].cutSequence.length - 1)
                 {
-                    console.log(`Token ${TokensDataCpy[TokenIndex].TokenName} CUTPOINT found`)
-
+                    //console.log(`Token ${TokensDataCpy[TokenIndex].TokenName} CUTPOINT found`)
+                    console.log(token)
                     if(TokensDataCpy[TokenIndex].hasSomething) 
                     {
-                        console.log(`Token ${TokensDataCpy[TokenIndex].TokenName} found`)
+                        if((TokensDataCpy[TokenIndex].maxamountcharacters > 0) && (token.length > TokensDataCpy[TokenIndex].maxamountcharacters))
+                        {                    
+                            warnings.push(
+                            {
+                                linha:lineprevState,//linha do erro
+                                coluna:columnprevState,//coluna do warning
+                                warning:`Token ${TokensDataCpy[TokenIndex].TokenName} contem mais caracteres doque o recomendado`,//erro em si 
+                            })
+                        }
+                                              
+                        if(TokensDataCpy[TokenIndex].typeofdata !== 'string&number')
+                        {
+                            for(let i = 0 ;i < token.length; i++)
+                            {
+                                if(TokensDataCpy[TokenIndex].typeofdata === 'string')
+                                {
+                                    if(isNumber(token[i]))
+                                    {
+                                        warnings.push(
+                                        {
+                                            linha:lineprevState,//linha do erro
+                                            coluna:columnprevState,//coluna do warning
+                                            warning:`Token ${TokensDataCpy[TokenIndex].TokenName} nao contem so letras`,//erro em si 
+                                        })
+                                        break
+                                    }
+                                }
+                                else if (TokensDataCpy[TokenIndex].typeofdata === 'number')
+                                {
+                                    if(!isNumber(token[i]))
+                                    {
+                                        warnings.push(
+                                        {
+                                            linha:lineprevState,//linha do erro
+                                            coluna:columnprevState,//coluna do warning
+                                            warning:`Token ${TokensDataCpy[TokenIndex].TokenName} nao contem so numeros`,//erro em si 
+                                        })
+                                        break
+                                    }
+                                }
+                            }
+                        }   
+                        
+                        //console.log(`Token ${TokensDataCpy[TokenIndex].TokenName} found`)
+                        token = ''
                         tokensOK++
                     }
                     else 
-                    {
-                        console.log(`Token ${TokensDataCpy[TokenIndex].TokenName} NOT found`)
-                        seterros((prevstate)=>
+                    {         
+                        //console.log('erros pushing')
+ 
+                        erros.push(
                         {
-                            prevstate.push(
-                            {
-                                linha:lineprevState,//linha do erro
-                                coluna:column - TokensDataCpy[TokenIndex].cutSequence.length,//coluna do erro
-                                erro:`Token ${TokensDataCpy[TokenIndex].TokenName} vazio`,//erro em si 
-                            })
-                            return prevstate
+                            linha:lineprevState,//linha do erro
+                            coluna:columnprevState ,//coluna do erro
+                            erro:`Token ${TokensDataCpy[TokenIndex].TokenName} vazio`,//erro em si 
                         })
                     }
 
-                    console.log(`Go Analisys next token`)
-
+                    //console.log(`Go Analisys next token`)
+                    columnprevState = column
                     lineprevState = line
                     TokenIndex++
                     cutindex = 0 
@@ -127,11 +199,29 @@ const Editor2 = () =>
             }
             else 
             {
-                if(WholeTXT[index]!== ' ' && WholeTXT[index]!== '\n') TokensDataCpy[TokenIndex].hasSomething = true
+                if(WholeTXT[index]!== ' ' && WholeTXT[index]!== '\n') 
+                {
+                    token = token+WholeTXT[index]
+                    //console.log(token)
+
+                    if(!TokensDataCpy[TokenIndex].hasSomething)
+                    {
+                        TokensDataCpy[TokenIndex].hasSomething = true
+                        //console.log(`TokenName ${TokensDataCpy[TokenIndex].TokenName} hasSomething`)
+                    }                  
+                }
                 cutindex = 0
             }
-           
-        }       
+        }     
+       
+        if(tokensOK!=TokensData.length)
+        {
+            //console.log('Missing tokens')
+            //alert here
+        }
+
+        setCompiledErros(erros)
+        setCompiledWarnings(warnings)
     }
 
     function Compile (value)
@@ -140,11 +230,9 @@ const Editor2 = () =>
         
         analyzSpaces()
 
-        analyzToken()
-
-        setAnalyzsDone(!analyzsDone)
-
-      
+        analyzToken()  
+        
+        setupdateHelper(!updateHelper)
         
     }
 
@@ -156,7 +244,7 @@ const Editor2 = () =>
             alignItems:'center',
             justifyContent:'flex-end'
             }}>
-                <p style={{marginRight:'1rem'}}>Ultra easy mode</p>
+                <p style={{color:'#d3d3d3' ,marginRight:'1rem'}}>Ultra easy mode</p>
 
                 <Switch
                 onChange={()=>
@@ -200,13 +288,14 @@ const Editor2 = () =>
             width:'7rem',
             height:'3.5rem',
             borderRadius:'20rem',
-            backgroundColor:'#181818',
-            color:'#d3d3d3'
+            backgroundColor:'#d3d3d3',
+            color:'#181818'
         }} 
         onClick={()=>
         {
-            //console.log("ButtonClick")
             Compile()
+            //console.log("ButtonClick")
+            
         }}>
             Compilar
         </button>

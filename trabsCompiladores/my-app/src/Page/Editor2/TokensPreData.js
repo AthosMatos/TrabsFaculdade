@@ -2,112 +2,130 @@ export const TokensData =
 [
     {
         hasSomething:false,
-       
+        typeofdata:'string&number',
+        maxamountcharacters:0,
         TokenName: 'instituicao',
         cutSequence:'\nMEMORANDO no.',
     },
     {
         hasSomething:false,
-       
+        typeofdata:'number',
+        maxamountcharacters:0,
         TokenName: 'numero',
         cutSequence:'\n',
     },
     {
         hasSomething:false,
-       
+        typeofdata:'string',
+        maxamountcharacters:0,
         TokenName: 'local',
         cutSequence:', ',
     },
     {
         hasSomething:false,
-       
+        typeofdata:'number',
+        maxamountcharacters:2,
         TokenName: 'dia',
         cutSequence:' de ',
     },
     {
         hasSomething:false,
-       
+        typeofdata:'string',
+        maxamountcharacters:0,
         TokenName: 'mes',
         cutSequence:' de ',
     }, 
     {
         hasSomething:false,
-       
+        typeofdata:'number',
+        maxamountcharacters:4,
         TokenName: 'ano',
-        cutSequence:'.\n\n',
+        cutSequence:'.\n\nDe: Departamento',
     },
     {
         hasSomething:false,
-       
-        TokenName: 'depto proponente',
+        typeofdata:'string&number',
+        maxamountcharacters:0,
+        TokenName:'depto_proponente',
         cutSequence:'\nPara: Departamento',
     },
 
     {
         hasSomething:false,
-       
-        TokenName: 'depto dest',
+        typeofdata:'string&number',
+        maxamountcharacters:0,
+        TokenName: 'depto_dest',
         cutSequence:' /',
     },
     {
         hasSomething:false,
-       
-        TokenName: 'pronome tratamento',
-        cutSequence:'.',
+        typeofdata:'string',
+        maxamountcharacters:0,
+        TokenName: 'pronome_tratamento',
+        cutSequence:'. ',
     },
     {
         hasSomething:false,
-       
-        TokenName: 'cargo dest',
+        typeofdata:'string&number',
+        maxamountcharacters:0,
+        TokenName: 'cargo_dest',
         cutSequence:' ',
     },
     {
         hasSomething:false,
-       
-        TokenName: 'nome dest',
+        typeofdata:'string&number',
+        maxamountcharacters:0,
+        TokenName: 'nome_dest',
         cutSequence:'\nAssunto:',
     },
     {
         hasSomething:false,
-       
+        typeofdata:'string&number',
+        maxamountcharacters:0,
         TokenName: 'assunto',
         cutSequence:'\n\n',
     },
     {
         hasSomething:false,
-       
-        TokenName: 'pronome tratamento',
+        typeofdata:'string',
+        maxamountcharacters:0,
+        TokenName: 'pronome_tratamento',
         cutSequence:'.',
     },
    
     {
         hasSomething:false,
-       
-        TokenName: 'cargo dest',
+        typeofdata:'string&number',
+        maxamountcharacters:0,
+        TokenName: 'cargo_dest',
         cutSequence:'\n',
     },
     {
         hasSomething:false,
-       
+        typeofdata:'string&number',
+        maxamountcharacters:0,
         TokenName: 'descricao',
         cutSequence:'\n\nAtenciosamente,\n\n',
     },
     {
         hasSomething:false,
-       
-        TokenName: 'nome proponente',
+        typeofdata:'string&number',
+        maxamountcharacters:0,
+        TokenName: 'nome_proponente',
         cutSequence:'\n',
     },
     {
         hasSomething:false,
-       
-        TokenName: 'cargo proponente',
+        typeofdata:'string&number',
+        maxamountcharacters:0,
+        TokenName: 'cargo_proponente',
         cutSequence:' do Departamento',
     },
     {
         hasSomething:false,
-       
-        TokenName: 'depto proponente',
+        typeofdata:'string&number',
+        maxamountcharacters:0,
+        TokenName: 'depto_proponente',
         cutSequence:'\n',
     },
 ]
