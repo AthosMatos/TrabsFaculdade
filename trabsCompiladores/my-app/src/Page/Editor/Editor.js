@@ -6,8 +6,6 @@ import './Editor.css';
 
 const Editor = () => 
 {
-
-
     const [line,setLine] = useState()
     const [CurrentToken,setCurrentToken] = useState('')
     const [PrevTokens,setPrevTokens] = useState([])
@@ -19,7 +17,6 @@ const Editor = () =>
 
     useEffect(()=>
     {
-        
         let va = new Date()
         va.getFullYear()
 

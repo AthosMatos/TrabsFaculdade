@@ -119,7 +119,7 @@ export const TokensData =
         typeofdata:'string&number',
         maxamountcharacters:0,
         TokenName: 'cargo_proponente',
-        cutSequence:' do Departamento',
+        cutSequence:' do Departamento ',
     },
     {
         hasSomething:false,
