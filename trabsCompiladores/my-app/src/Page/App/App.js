@@ -7,7 +7,7 @@ import './App.css';
 const App = () => 
 {
   return (
-    <ToastProvider autoDismissTimeout={8000} transitionDuration={400} >
+    <ToastProvider autoDismissTimeout={80000} transitionDuration={400} >
       <div className='AppContainer2'>
         <Editor2/>
       </div>
