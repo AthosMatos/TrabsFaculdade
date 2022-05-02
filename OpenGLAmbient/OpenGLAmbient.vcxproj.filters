@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="Dependencies\common\vboindexer.cpp">
+      <Filter>Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\common\texture.cpp">
+      <Filter>Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\common\text2D.cpp">
+      <Filter>Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\common\tangentspace.cpp">
+      <Filter>Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\common\shader.cpp">
+      <Filter>Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\common\quaternion_utils.cpp">
+      <Filter>Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\common\objloader.cpp">
+      <Filter>Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\common\controls.cpp">
+      <Filter>Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Dependencies\common\stb_image.cpp">
+      <Filter>Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="WindowClass.cpp">
+      <Filter>App\WindowClass</Filter>
+    </ClCompile>
+    <ClCompile Include="cfgLoader.cpp">
+      <Filter>Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="App.cpp">
+      <Filter>App</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneClass.cpp">
+      <Filter>App\Graphics\SceneClass</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics.cpp">
+      <Filter>App\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="ModelClass.cpp">
+      <Filter>App\Graphics\ModelClass</Filter>
+    </ClCompile>
+    <ClCompile Include="Model.cpp">
+      <Filter>App\Graphics\ModelClass\Model</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Dependencies\common\vboindexer.hpp">
+      <Filter>Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\common\texture.hpp">
+      <Filter>Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\common\text2D.hpp">
+      <Filter>Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\common\tangentspace.hpp">
+      <Filter>Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\common\shader.hpp">
+      <Filter>Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\common\quaternion_utils.hpp">
+      <Filter>Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\common\objloader.hpp">
+      <Filter>Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\common\controls.hpp">
+      <Filter>Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\common\stb_image.h">
+      <Filter>Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowClass.hpp">
+      <Filter>App\WindowClass</Filter>
+    </ClInclude>
+    <ClInclude Include="cfgLoader.hpp">
+      <Filter>Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="App.hpp">
+      <Filter>App</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneClass.hpp">
+      <Filter>App\Graphics\SceneClass</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics.hpp">
+      <Filter>App\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelClass.hpp">
+      <Filter>App\Graphics\ModelClass</Filter>
+    </ClInclude>
+    <ClInclude Include="Model.hpp">
+      <Filter>App\Graphics\ModelClass\Model</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Helpers">
+      <UniqueIdentifier>{055c4f19-fdeb-4af4-a6c9-08ce3b31f587}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App">
+      <UniqueIdentifier>{b282085f-2a97-467e-a45f-dc88c38b9b82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App\WindowClass">
+      <UniqueIdentifier>{d917fb34-fd54-4637-a564-17ff810a53be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App\Graphics">
+      <UniqueIdentifier>{ffe21108-1a83-43d1-9c09-fa8f071a4f0b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App\Graphics\SceneClass">
+      <UniqueIdentifier>{50d73c4c-54cf-41d3-bccf-c802b3f81de2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App\Graphics\ModelClass">
+      <UniqueIdentifier>{a66852a3-6817-4e84-95ba-4d987a44f038}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App\Graphics\ModelClass\Model">
+      <UniqueIdentifier>{81a215a5-7d15-402b-8e6e-5fd4ddd1638d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

@@ -4,22 +4,27 @@ import { Text, Descendant, createEditor } from 'slate'
 import { css } from '@emotion/css'
 import { withHistory } from 'slate-history'
 
-const TextBox = ({setWholeTXT,WholeTXT,criticalError}) => {
+const TextBox = ({setWholeTXT,WholeTXT,criticalError,CompiledErros,CompiledWarnings}) => {
   
   const editor = useMemo(() => withHistory(withReact(createEditor())), [])
 
   const decorate = useCallback(() => {
-      let fromLine = criticalError ? criticalError.Startlinha - 1  : 0
-      let fromColumn = criticalError? criticalError.Startcoluna - 1 : 0
-      let lines = 0
-      let toline = fromLine 
-      let toColumn = criticalError? criticalError.Endcoluna - 1 : 0
 
-      if(criticalError)
+      let ret = []
+
+      CompiledWarnings.forEach((value,index,array) => 
       {
+        let highlight = {}
+
+        let fromLine = value.Startlinha - 1 
+        let fromColumn = value.Startcoluna - 1 
+        let lines = 0
+        let toline = fromLine 
+        let toColumn = value.Endcoluna - 1 
+  
         for(let i = 0; i<WholeTXT.length; i++)
         {
-          if(lines + 1 === criticalError.Startlinha)
+          if(lines + 1 === value.Startlinha)
           {
             toColumn++
           }
@@ -29,18 +34,55 @@ const TextBox = ({setWholeTXT,WholeTXT,criticalError}) => {
             lines++
           }
         }
-
         //console.log('criticalError',criticalError)
-      }
 
-      //console.log('fromLine',fromLine)
+        highlight = {
+          anchor: { path:[fromLine,0], offset: fromColumn },
+          focus: { path:[toline,0], offset: toColumn },
+          highlight: true,
+          type:'warning',
+          FulllineError:value.FulllineError
+        }
+        ret.push(highlight)
+      });
+      
+      CompiledErros.forEach((value,index,array) => 
+      {
+        let highlight = {}
+
+        let fromLine = value.Startlinha - 1 
+        let fromColumn = value.Startcoluna - 1 
+        let lines = 0
+        let toline = fromLine 
+        let toColumn = value.Endcoluna - 1 
+  
+        for(let i = 0; i<WholeTXT.length; i++)
+        {
+          if(lines + 1 === value.Startlinha)
+          {
+            toColumn++
+          }
+          if(WholeTXT[i]==="\n")
+          {
+            if(toColumn)break
+            lines++
+          }
+        }
+        //console.log('criticalError',criticalError)
+
+        highlight = {
+          anchor: { path:[fromLine,0], offset: fromColumn },
+          focus: { path:[toline,0], offset: toColumn },
+          highlight: true,
+          type:'erro',
+          FulllineError:value.FulllineError
+        }
+        ret.push(highlight)
+      });
+
       //console.log('toline',toline)
 
-      return {
-        anchor: { path:[fromLine,0], offset: fromColumn },
-        focus: { path:[toline,0], offset: toColumn },
-        highlight: true,
-      }
+      return ret
     },
     [WholeTXT,criticalError]
   )
@@ -77,14 +119,38 @@ const TextBox = ({setWholeTXT,WholeTXT,criticalError}) => {
 }
 
 const Leaf = ({ attributes, children, leaf }) => {
+
+  let classN
+  //console.log(leaf.FulllineError)
+
+  if(leaf.FulllineError===true)
+  {
+    classN = css`
+      font-weight: ${leaf.bold && 'bold'};
+      background-color: ${leaf.highlight && '#1e309b'};`
+  }
+  else
+  {
+    if(leaf.type === 'erro')
+    {
+      classN = css`
+        font-weight: ${leaf.bold && 'bold'};
+        background-color: ${leaf.highlight && '#690000'};`
+      
+    }
+    else
+    {
+      classN = css`
+        font-weight: ${leaf.bold && 'bold'};
+        background-color: ${leaf.highlight && '#a78e01'};`
+    }
+  }
+
   return (
     <span
       {...attributes}
       {...(leaf.highlight && { 'data-cy': 'search-highlighted' })}
-      className={css`
-        font-weight: ${leaf.bold && 'bold'};
-        background-color: ${leaf.highlight && '#690000'};
-      `}
+      className={classN}
     >
       {children}
     </span>
@@ -98,7 +164,6 @@ const initialValue =
     children: 
     [
         { text: '' },
-        
     ],
   },
 ]

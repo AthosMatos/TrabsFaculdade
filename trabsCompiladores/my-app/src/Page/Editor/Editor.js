@@ -3,8 +3,9 @@ import { createEditor, Descendant } from 'slate'
 import { Slate, Editable, withReact } from 'slate-react'
 import { withHistory, } from 'slate-history'
 import './Editor.css';
+import { ForDummiesSwitch } from '../Editor2/components/ForDummiesSwitch';
 
-const Editor = () => 
+const Editor = ({setEditorBeingUsed,editorBeingUsed}) => 
 {
     const [line,setLine] = useState()
     const [CurrentToken,setCurrentToken] = useState('')
@@ -561,16 +562,29 @@ const Editor = () =>
 
     return (
     <div className='center'>
-        <div style={{
+       <div 
+        style={{
+            position:'absolute',
             display:'flex',
             flexDirection:'row',
-            marginLeft:'5%'
+            alignItems:'center',
+            justifyContent:'flex-start',
             }}>
-            <p style={{color: 'rgb(140, 140, 140)',}}>Voce esta editando: </p>
-            <p style={{color:'rgb(0, 200, 0)', marginLeft:'0.4rem',}}>{TokenID}</p>
-            <p style={{color:'rgb(200, 0, 0)', marginLeft:'0.4rem',}}>{warning}</p>
-        
+                <p style={{color: 'rgb(140, 140, 140)',}}>Voce esta editando: </p>
+                <p style={{color:'rgb(0, 200, 0)', marginLeft:'0.4rem',}}>{TokenID}</p>
+                <p style={{color:'rgb(200, 0, 0)', marginLeft:'0.4rem',}}>{warning}</p>
         </div>
+
+        <div 
+        style={{
+            display:'flex',
+            flexDirection:'row',
+            alignItems:'center',
+            justifyContent:'flex-end',
+        }}>
+            <ForDummiesSwitch editorBeingUsed={editorBeingUsed} setEditorBeingUsed={setEditorBeingUsed}/>
+        </div>
+        
         
         <div className='EditorContainer'>
             <Slate editor={editor} value={initialText} onChange={(value)=>
