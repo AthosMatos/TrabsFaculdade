@@ -13,6 +13,8 @@ public:
 	GLuint indexbuffer;
 	GLuint uvbuffer;
 	GLuint VertexArrayID;
+	GLuint ViewMatrixID;
+	GLuint ModelMatrixID;
 	static GLfloat g_uv_buffer_data[]; //texture mapping data
 	static GLfloat g_vertex_buffer_data[]; //vertex mapping data
 

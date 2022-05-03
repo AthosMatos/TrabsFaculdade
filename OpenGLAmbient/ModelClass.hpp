@@ -8,6 +8,8 @@
 #include <shader.hpp>
 #include <texture.hpp>
 #include <controls.hpp>
+#include <vector>
+#include <objloader.hpp>
 
 #define VertexShaderDir "shaders\\vertex\\"
 #define FragmentShaderDir "shaders\\fragment\\"
@@ -19,7 +21,10 @@ class ModelClass
 {
 public:
 	void loadPreloaded(string ModelName);
+	void loadObjTest();
+	void UpdateObjTest();
 	void UpdatePreloaded(string ModelName);
+	void RenderObjTest();
 	void RenderPreloaded(string ModelName);
 
 	void loadShader();

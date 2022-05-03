@@ -2,19 +2,22 @@
 
 int SceneClass::Load()
 {
-	loadPreloaded(PreloadCube);
+	loadObjTest();
+
+	//loadPreloaded(PreloadCube);
 	return 1;
 }
 
 void SceneClass::Update()
 {
-	UpdatePreloaded(PreloadCube);
+	UpdateObjTest();
+	//UpdatePreloaded(PreloadCube);
 }
 
 void SceneClass::Render()
 {
-
-	RenderPreloaded(PreloadCube);
+	RenderObjTest();
+	//RenderPreloaded(PreloadCube);
 }
 
 void SceneClass::Release()

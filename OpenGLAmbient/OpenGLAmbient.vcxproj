@@ -191,6 +191,12 @@
     <ClInclude Include="SceneClass.hpp" />
     <ClInclude Include="WindowClass.hpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="shaders\fragment\StandardShading.fragmentshader" />
+    <None Include="shaders\fragment\TextureFragmentShader.fragmentshader" />
+    <None Include="shaders\vertex\StandardShading.vertexshader" />
+    <None Include="shaders\vertex\TransformVertexShader.vertexshader" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

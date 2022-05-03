@@ -123,5 +123,22 @@
     <Filter Include="App\Graphics\ModelClass\Model">
       <UniqueIdentifier>{81a215a5-7d15-402b-8e6e-5fd4ddd1638d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="App\Graphics\shaders">
+      <UniqueIdentifier>{9127b84f-4070-40ab-8425-ea53adf7a3c5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="shaders\fragment\TextureFragmentShader.fragmentshader">
+      <Filter>App\Graphics\shaders</Filter>
+    </None>
+    <None Include="shaders\vertex\TransformVertexShader.vertexshader">
+      <Filter>App\Graphics\shaders</Filter>
+    </None>
+    <None Include="shaders\vertex\StandardShading.vertexshader">
+      <Filter>App\Graphics\shaders</Filter>
+    </None>
+    <None Include="shaders\fragment\StandardShading.fragmentshader">
+      <Filter>App\Graphics\shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>
