@@ -38,8 +38,9 @@ void ModelClass::loadObjTest()
 	ModelMatrixID = glGetUniformLocation(programID, "M");
 
 	// Load the texture
-	Texture = loadDDS("uvmap.DDS");
+	//Texture = loadDDS("uvmap.DDS");
 
+	Texture = loadAnyFile("Skull.jpg");
 	// Get a handle for our "myTextureSampler" uniform
 	TextureID = glGetUniformLocation(programID, "myTextureSampler");
 
@@ -48,7 +49,9 @@ void ModelClass::loadObjTest()
 	vector<glm::vec2> uvs;
 	vector<glm::vec3> normals;
 	//bool res = loadOBJ("suzanne.obj", vertices, uvs, normals);
-	bool res = loadOBJ("cube.obj", vertices, uvs, normals);
+	//bool res = loadOBJ("cube.obj", vertices, uvs, normals);
+	//bool res = loadOBJ("12140_Skull_v3_L2.obj", vertices, uvs, normals);
+	bool res = loadOBJ("legoobj.obj", vertices, uvs, normals);
 	// Load it into a VBO
 
 	vertexbuffer;
@@ -93,7 +96,7 @@ void ModelClass::UpdateObjTest()
 	glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
 	glUniformMatrix4fv(ViewMatrixID, 1, GL_FALSE, &ViewMatrix[0][0]);
 
-	glm::vec3 lightPos = glm::vec3(4, 4, 4);
+	glm::vec3 lightPos = glm::vec3(4, -20, 4);
 	glUniform3f(LightID, lightPos.x, lightPos.y, lightPos.z);
 
 	// Bind our texture in Texture Unit 0
