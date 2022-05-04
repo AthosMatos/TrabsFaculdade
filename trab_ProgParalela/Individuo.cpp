@@ -62,6 +62,6 @@ void Individuo::UpdateDados()
 
 void Individuo::release()
 {
-	delete cromossomo;
+	free(cromossomo);
 }
 

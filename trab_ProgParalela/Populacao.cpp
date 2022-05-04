@@ -63,21 +63,13 @@ Populacao::Populacao(int num_individuos, int media_filhos,int porcentagem_mutaca
 	this->numThreads = numThreads;
 }
 
-void Populacao::GerarPopInicial(int chanceAcimadoPeso)
+void Populacao::GerarPopInicialThreaded(int chanceAcimadoPeso, float start, float end, int index)
 {
 	random_device rd;
 	auto random = default_random_engine{ rd() };
 	uniform_int_distribution<> uniform_dist(1, 100);
 
-	/*Individuo* indiv1 = new Individuo(1, geracao);
-	indiv1->CreatePerfectCustoBene(0);
-	pop.push_back(indiv1);
-
-	Individuo* indiv2 = new Individuo(2, geracao);
-	indiv2->CreatePerfectValor(0);
-	pop.push_back(indiv2);
-	*/
-	for (int i = 0; i < num_individuos; i++)
+	for (int i = (int)start; i < (int)end; i++)
 	{
 		Individuo* indiv = new Individuo(i + 1, geracao);
 
@@ -87,6 +79,32 @@ void Populacao::GerarPopInicial(int chanceAcimadoPeso)
 		valor_total_acomulado += indiv->valor;
 		pop.push_back(indiv);
 	}
+}
+
+void Populacao::GerarPopInicial(int chanceAcimadoPeso)
+{
+
+	/*Individuo* indiv1 = new Individuo(1, geracao);
+	indiv1->CreatePerfectCustoBene(0);
+	pop.push_back(indiv1);
+
+	Individuo* indiv2 = new Individuo(2, geracao);
+	indiv2->CreatePerfectValor(0);
+	pop.push_back(indiv2);
+	*/
+
+	float intervalo = (float)num_individuos / (float)numThreads;
+
+	for (int thrds = 0; thrds < numThreads; thrds++)
+	{
+		threads.emplace_back(&Populacao::GerarPopInicialThreaded, this, chanceAcimadoPeso, thrds * intervalo, (thrds + 1) * intervalo, thrds);
+	}
+
+	for (auto& t : threads)
+	{
+		t.join();
+	}
+	threads.clear();
 
 	sort(pop.begin(), pop.end(), MaiorPaMenor_ValorIndividuo);
 }
@@ -159,13 +177,14 @@ void Populacao::release()
 	for (auto& p : pop)
 	{
 		p->release();
-		delete p;
+		free(p);
 	}
 }
 
 vector<Individuo*> Populacao::getVector() { return pop; }
 
 int Populacao::getGeracao(){ return geracao; }
+
 
 vector<pair<Individuo*, Individuo*>> Populacao::FazerPares()
 {

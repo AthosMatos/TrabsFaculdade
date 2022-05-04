@@ -38,9 +38,9 @@ void ModelClass::loadObjTest()
 	ModelMatrixID = glGetUniformLocation(programID, "M");
 
 	// Load the texture
-	//Texture = loadDDS("uvmap.DDS");
+	Texture = loadDDS("uvmap.DDS");
 
-	Texture = loadAnyFile("Skull.jpg");
+	//Texture = loadAnyFile("concreto.png");
 	// Get a handle for our "myTextureSampler" uniform
 	TextureID = glGetUniformLocation(programID, "myTextureSampler");
 
@@ -54,17 +54,17 @@ void ModelClass::loadObjTest()
 	bool res = loadOBJ("legoobj.obj", vertices, uvs, normals);
 	// Load it into a VBO
 
-	vertexbuffer;
+	
 	glGenBuffers(1, &vertexbuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
 	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec3), &vertices[0], GL_STATIC_DRAW);
 
-	uvbuffer;
+
 	glGenBuffers(1, &uvbuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
 	glBufferData(GL_ARRAY_BUFFER, uvs.size() * sizeof(glm::vec2), &uvs[0], GL_STATIC_DRAW);
 
-	normalbuffer;
+	
 	glGenBuffers(1, &normalbuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
 	glBufferData(GL_ARRAY_BUFFER, normals.size() * sizeof(glm::vec3), &normals[0], GL_STATIC_DRAW);
@@ -84,10 +84,14 @@ void ModelClass::UpdateObjTest()
 
 	// Use our shader
 	glUseProgram(programID);
+	float size = 0.05f;
+
+	glm::vec3 scale = glm::vec3(1.0f * size, 1.0f * size, 1.0f * size);
 
 	glm::mat4 ProjectionMatrix = getProjectionMatrix();
 	glm::mat4 ViewMatrix = getViewMatrix();
-	glm::mat4 ModelMatrix = glm::mat4(1.0);
+	glm::mat4 ModelMatrix = glm::mat4();
+	ModelMatrix = glm::scale(ModelMatrix, scale);
 	glm::mat4 MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 
 	// Send our transformation to the currently bound shader, 

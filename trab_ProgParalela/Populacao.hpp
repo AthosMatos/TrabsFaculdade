@@ -32,6 +32,7 @@ private:
 
 private:
 	void CruzarThreaded(vector<pair<Individuo*, Individuo*>> paresIndividuos, float start, float end, int index);
+	void GerarPopInicialThreaded(int chanceAcimadoPeso, float start, float end, int index);
 
 private:
 	vector<Individuo*> pop;
