@@ -2,25 +2,26 @@
 
 int SceneClass::Load()
 {
-	loadObjTest();
-
+	m = new ModelClass;
+	m->loadModel("");
+	
 	//loadPreloaded(PreloadCube);
 	return 1;
 }
 
 void SceneClass::Update()
 {
-	UpdateObjTest();
+	m->updateModel("");
 	//UpdatePreloaded(PreloadCube);
 }
 
 void SceneClass::Render()
 {
-	RenderObjTest();
+	m->renderModel("");
 	//RenderPreloaded(PreloadCube);
 }
 
 void SceneClass::Release()
 {
-	CleanModels();
+	m->CleanModels();
 }

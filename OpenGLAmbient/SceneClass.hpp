@@ -1,7 +1,7 @@
 #pragma once
 #include "ModelClass.hpp"
 
-class SceneClass : protected ModelClass
+class SceneClass
 {
 public:
 	int Load();
@@ -10,6 +10,6 @@ public:
 	void Release();
 
 private:
-
+	ModelClass* m;
 };
 

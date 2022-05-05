@@ -1,6 +1,10 @@
 #pragma once
 #include <glew.h>
 #include <glfw3.h>
+#include <vector>
+#include <glm.hpp>
+
+using namespace std;
 
 class Model
 {
@@ -11,12 +15,15 @@ public:
 	GLuint TextureID;
 	GLuint vertexbuffer;
 	GLuint indexbuffer;
+	GLuint normalbuffer;
 	GLuint uvbuffer;
+	GLuint LightID;
 	GLuint VertexArrayID;
 	GLuint ViewMatrixID;
 	GLuint ModelMatrixID;
-	static GLfloat g_uv_buffer_data[]; //texture mapping data
-	static GLfloat g_vertex_buffer_data[]; //vertex mapping data
+	vector<glm::vec2> uvs; //texture mapping data
+	vector<glm::vec3> vertices; //vertex mapping data
+	vector<glm::vec3> normals; //normal mapping data
 
 public:
 	void Release();
