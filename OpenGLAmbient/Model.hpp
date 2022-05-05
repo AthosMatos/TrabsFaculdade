@@ -24,6 +24,17 @@ public:
 	vector<glm::vec2> uvs; //texture mapping data
 	vector<glm::vec3> vertices; //vertex mapping data
 	vector<glm::vec3> normals; //normal mapping data
+	vector<glm::vec3> indices; //normal mapping data
+
+	float size;
+
+	glm::vec3 scale;
+	glm::vec3 translate;
+
+	glm::mat4 ProjectionMatrix;
+	glm::mat4 ViewMatrix;
+	glm::mat4 ModelMatrix;
+	glm::mat4 MVP;
 
 public:
 	void Release();

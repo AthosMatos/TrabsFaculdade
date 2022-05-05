@@ -5,7 +5,7 @@ int Graphics::Init()
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);	// Dark blue background
 	glEnable(GL_DEPTH_TEST);	// Enable depth test
 	glDepthFunc(GL_LESS); // Accept fragment if it closer to the camera than the former one
-	glEnable(GL_CULL_FACE);	// Cull triangles which normal is not towards the camera
+	//glEnable(GL_CULL_FACE);	// Cull triangles which normal is not towards the camera
 
 	scenes = new SceneClass;
 
@@ -21,6 +21,9 @@ void Graphics::Update()
 
 void Graphics::Render()
 {
+	// Clear the screen
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 	scenes->Render();
 }
 
