@@ -1,10 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <iostream>
-#include <glew.h>
-#include "stb_image.h"
-#include <glfw3.h>
+#include "texture.hpp"
 
 GLuint loadBMP_custom(const char * imagepath){
 

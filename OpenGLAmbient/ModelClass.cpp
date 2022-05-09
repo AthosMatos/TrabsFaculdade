@@ -114,6 +114,7 @@ void ModelClass::loadObj(string ModelName, string objPath,string texturePath)
 	//bool res = loadOBJ("cube.obj", vertices, uvs, normals);
 	//bool res = loadOBJ("12140_Skull_v3_L2.obj", vertices, uvs, normals);
 	bool res = loadOBJ(objPath.c_str(), tempM->vertices, tempM->uvs, tempM->normals);
+	//bool res = loadObj2(objPath.c_str(), false, false, tempM->vertices, tempM->uvs, tempM->normals);
 	// Load it into a VBO
 
 	glGenBuffers(1, &tempM->vertexbuffer);
