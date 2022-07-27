@@ -17,7 +17,7 @@ int main()
 	grafo.connect("D", "E", 10);
 	grafo.connect("E", "F", 6);
 	grafo.connect("F", "C", 9);
-	grafo.UCS("A", "E");
+	grafo.DFS("A", "E");
 
 
 	return 0;

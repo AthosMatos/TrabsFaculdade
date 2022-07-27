@@ -135,10 +135,12 @@ public:
 			vector <string> queue;
 			vector <string> exclude;
 			string SearchIndex = start;
+			string lastIndex;
 			string smallerIndex;
 			
 			queue.push_back(SearchIndex);
-
+			cout << SearchIndex << endl;
+			
 			while (true)
 			{
 				if (SearchIndex == end)return true;
@@ -185,7 +187,9 @@ public:
 				if (items[smallerIndex]->hasKids(SearchIndex))
 				{
 					exclude.push_back(SearchIndex);
+					if (SearchIndex == smallerIndex)return false;
 					SearchIndex = smallerIndex;
+					cout << SearchIndex << endl;
 				}
 				else
 				{
@@ -195,6 +199,71 @@ public:
 			}
 		}
 		return false;
+	}
+	bool DFS(string start, string end)
+	{
+		vector <string> queue;
+		vector <string> exclude;
+		string Prev;
+		string SearchIndex = start;
+		Prev = SearchIndex;
+		string lastIndex;
+
+		cout << SearchIndex << endl;
+		exclude.push_back(SearchIndex);
+
+		while (true)
+		{
+			if (SearchIndex == end)return true;
+
+			for (auto& c : items[SearchIndex]->connections)
+			{
+				bool isInside = false;
+				for (auto& x : exclude)
+				{
+					if (x == c.first) { isInside = true; break; }
+				}
+				if (!isInside) queue.push_back(c.first);
+				else
+				{
+					bool isInside = false;
+					for (auto& x : exclude)
+					{
+						if (x == c.first) { isInside = true; break; }
+					}
+					if (!isInside) queue.push_back(c.first);
+				}
+			}
+
+			if (queue.size())
+			{
+				Prev = SearchIndex;
+				SearchIndex = queue[queue.size() - 1];
+			}
+			else return false;
+
+			if (!items[SearchIndex]->hasKids(Prev))
+			{
+				exclude.push_back(SearchIndex);
+				for (int i = 0; i < queue.size(); i++)
+				{
+					if (queue[i] == SearchIndex)
+					{
+						queue.erase(queue.begin() + i);
+						break;
+					}
+				}	
+				cout << SearchIndex << endl;
+				SearchIndex = queue[queue.size() - 1];
+				cout << SearchIndex << endl;
+			}
+			else
+			{
+				cout << SearchIndex << endl;
+			}
+			exclude.push_back(SearchIndex);
+		}
+	return false;
 	}
 };
 
