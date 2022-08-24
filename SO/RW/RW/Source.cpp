@@ -13,8 +13,9 @@ shared_mutex door;
 
 vector <thread> threads;
 
-void Read(int v)
+void Read(int v,bool priority)
 {
+	if (priority) unique_lock<shared_mutex> u1(door);
 	Processos++;
 	shared_lock<shared_mutex>s1(door);
 	for (int i = 0; i < 10; i++)
@@ -30,8 +31,10 @@ void Read(int v)
 
 }
 
-void Write()
+void Write(bool priority)
 {
+	if(priority)unique_lock<shared_mutex> u1(door);
+
 	while (true)
 	{
 		if (Processos == 0)
@@ -56,13 +59,13 @@ void Write()
 
 int main()
 {
-	threads.emplace_back(Write);
+	threads.emplace_back(Write, true);
 
 	for (int i = 0, c = 0; i < 100; i++,c++)
 	{
-		threads.emplace_back(Read, c);
+		threads.emplace_back(Read, c, false);
 	}
-	threads.emplace_back(Write);
+	threads.emplace_back(Write, true);
 	
 	for (auto& t : threads)
 	{
